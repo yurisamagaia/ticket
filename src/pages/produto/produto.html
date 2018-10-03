@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Produtos</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar (ionInput)="filtrar($event)" [(ngModel)]="textoBuscar"></ion-searchbar>
+  <ion-list>
+    <ion-item-sliding *ngFor="let produto of produtos">
+      <button ion-item (click)="editar(produto.id)">
+        <h1>{{ produto.nome }}</h1>
+        <h2 class="valor">{{ produto.valor | currency:'BRL':true }}</h2>
+        <h2>{{ produto.quantidade }}un</h2>
+        <p *ngIf="produto.ativo === 1" class="habilitado">Habilitado</p>
+        <p *ngIf="produto.ativo === 0" class="desabilitado">Desabilitado</p>
+      </button>
+      <ion-item-options side="left">
+        <button ion-button color="danger" (click)="remover(produto)">
+          <ion-icon name="trash"></ion-icon>
+          Excluir
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-fab right bottom>
+    <button ion-fab color="light" (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>
+<!--<ion-footer>
+  <ion-toolbar>
+    <p>Total: {{ produtos.length }}</p>
+    <ion-list>
+      <ion-item no-lines>
+        <ion-label>Listar inativos</ion-label>
+        <ion-toggle name="listarInativos" [(ngModel)]="somenteInativos" (ionChange)="buscar()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </ion-toolbar>
+</ion-footer>-->

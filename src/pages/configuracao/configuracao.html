@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Configurações</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header color="primary">
+      Configurações Gerais
+    </ion-list-header>
+    <ion-item>
+      <ion-label fixed>Evento: </ion-label>
+      <ion-input type="text" [(ngModel)]="model.evento" name="evento" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="print" item-start color="grey"></ion-icon>
+      <ion-label>Impressão contínua do Ticket</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.impressao_ticket" name="impressao_ticket"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="copy" item-start color="grey"></ion-icon>
+      <ion-label>Segunda via do Estacionamento</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.segunda_via" name="segunda_via"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="car" item-start color="grey"></ion-icon>
+      <ion-label>Placa Obrigatória</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.placa" name="placa"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Observações Gerais: </ion-label>
+      <ion-input type="text" [(ngModel)]="model.observacoes" name="observacoes"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-list-header color="primary">
+      Operador
+    </ion-list-header>
+    <ion-item>
+      <ion-label fixed>Nome: </ion-label>
+      <ion-input type="text" [(ngModel)]="model.operador" name="operador"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="cart" item-start color="grey"></ion-icon>
+      <ion-label>Acesso às vendas</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.vendas" name="vendas"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="hand" item-start color="grey"></ion-icon>
+      <ion-label>Acesso ao Estacionamento</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.estacionamento" name="estacionamento"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="calculator" item-start color="grey"></ion-icon>
+      <ion-label>Exibir Totais</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.totais" name="totais"></ion-toggle>
+    </ion-item>
+    <ion-item style="background-color: #f2f2f2">
+      <h2>Formas de Pagamento</h2>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="cash" item-start color="grey"></ion-icon>
+      <ion-label>Dinheiro</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.dinheiro" name="dinheiro"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="card" item-start color="grey"></ion-icon>
+      <ion-label>Cartão</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="model.cartao" name="cartao"></ion-toggle>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <div padding>
+      <button ion-button block color="primary" type="button" (click)="alterarSenha()">ALTERAR SENHA</button>
+    </div>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button block color="secondary" type="button" (click)="salvar()">SALVAR</button>
+  </ion-toolbar>
+</ion-footer>
