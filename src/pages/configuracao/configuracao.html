@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-list-header color="primary">
+    <ion-list-header color="toolbar">
       Configurações Gerais
     </ion-list-header>
     <ion-item>
@@ -37,7 +37,7 @@
     </ion-item>
   </ion-list>
   <ion-list>
-    <ion-list-header color="primary">
+    <ion-list-header color="toolbar">
       Operador
     </ion-list-header>
     <ion-item>
@@ -47,7 +47,7 @@
     <ion-item>
       <ion-icon name="cart" item-start color="grey"></ion-icon>
       <ion-label>Acesso às vendas</ion-label>
-      <ion-toggle color="primary" [(ngModel)]="model.vendas" name="vendas"></ion-toggle>
+      <ion-toggle color="primary" [(ngModel)]="model.venda" name="venda"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-icon name="hand" item-start color="grey"></ion-icon>
@@ -79,8 +79,6 @@
     </div>
   </ion-list>
 </ion-content>
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button block color="secondary" type="button" (click)="salvar()">SALVAR</button>
-  </ion-toolbar>
+<ion-footer padding>
+  <button ion-button block color="secondary" type="button" (click)="salvar()">SALVAR</button>
 </ion-footer>

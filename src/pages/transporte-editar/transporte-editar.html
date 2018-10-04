@@ -4,20 +4,23 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-list>
-    <ion-item>
-      <ion-label stacked>Nome</ion-label>
-      <ion-input type="text" name="nome" [(ngModel)]="model.nome"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Valor</ion-label>
-      <ion-input type="number" name="valor" [(ngModel)]="model.valor"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Ativo</ion-label>
-      <ion-checkbox name="ativo" [(ngModel)]="model.ativo"></ion-checkbox>
-    </ion-item>
-  </ion-list>
-  <button ion-button block (click)="salvar()">Salvar</button>
-</ion-content>
+<ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>Nome</ion-label>
+        <ion-input type="text" name="nome" [(ngModel)]="model.nome"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Valor</ion-label>
+        <ion-input type="number" name="valor" [(ngModel)]="model.valor"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Habilitado</ion-label>
+        <ion-toggle name="ativo" [(ngModel)]="model.ativo" color="primary"></ion-toggle>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  <ion-footer padding>
+    <button ion-button block (click)="salvar()" color="secondary">SALVAR</button>
+  </ion-footer>
+    

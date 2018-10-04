@@ -1,39 +1,49 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Transportes</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content>
-  <ion-searchbar (ionInput)="filtrar($event)" [(ngModel)]="textoBuscar"></ion-searchbar>
-  <ion-list>
-    <ion-item-sliding *ngFor="let transporte of transportes">
-      <button ion-item (click)="editar(transporte.id)">
-        <h1>{{ transporte.nome }}</h1>
-        <h2 class="valor">{{ transporte.valor | currency:'BRL':true }}</h2>
-        <p *ngIf="transporte.ativo === 1" class="habilitado">Habilitado</p>
-        <p *ngIf="transporte.ativo === 0" class="desabilitado">Desabilitado</p>
+    <ion-navbar>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
       </button>
-      <ion-item-options side="left">
-        <button ion-button color="danger" (click)="remover(transporte)">
-          <ion-icon name="trash"></ion-icon>
-          Excluir
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
-  <ion-fab right bottom>
-    <button ion-fab color="light" (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
-  </ion-fab>
-</ion-content>
-<!--<ion-footer>
-  <ion-toolbar>
-    <p>Total: {{ transportes.length }}</p>
+      <ion-title>Transportes</ion-title>
+    </ion-navbar>
+    <ion-searchbar (ionInput)="filtrar($event)" [(ngModel)]="textoBuscar" placeholder="Buscar"></ion-searchbar>
+  </ion-header>
+  
+  <ion-content>
     <ion-list>
-      <ion-item no-lines>
-        <ion-label>Listar inativos</ion-label>
-        <ion-toggle name="listarInativos" [(ngModel)]="somenteInativos" (ionChange)="buscar()"></ion-toggle>
-      </ion-item>
+      <ion-item-sliding *ngFor="let transporte of transportes" >
+        <button ion-item (click)="editar(transporte.id)" [ngClass]="(transporte.ativo === 1) ? 'habilitado' : 'desabilitado'">
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6>
+                <h2>{{ transporte.nome }}</h2>
+              </ion-col>
+              <ion-col col-6 text-right>
+                <h2 class="valor">{{ transporte.valor | currency:'BRL':true }}</h2>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </button>
+        <ion-item-options side="left" (ionSwipe)="ativar(item, transporte)"></ion-item-options>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="remover(transporte)">
+            <ion-icon name="trash"></ion-icon>
+            Excluir
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
     </ion-list>
-  </ion-toolbar>
-</ion-footer>-->
+    <ion-fab right bottom padding>
+      <button ion-fab color="secondary" (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </ion-content>
+  <!--<ion-footer>
+    <ion-toolbar>
+      <p>Total: {{ transportes.length }}</p>
+      <ion-list>
+        <ion-item no-lines>
+          <ion-label>Listar inativos</ion-label>
+          <ion-toggle name="listarInativos" [(ngModel)]="somenteInativos" (ionChange)="buscar()"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </ion-toolbar>
+  </ion-footer>-->

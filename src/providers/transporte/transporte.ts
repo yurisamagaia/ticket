@@ -9,26 +9,26 @@ export class TransporteProvider {
 
   public insert(transporte: Transporte) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'INSERT INTO transporte (nome, valor, ativo) VALUES (?, ?, ?, ?, ?)';
+      let sql = 'INSERT INTO transporte (nome, valor, ativo) VALUES (?, ?, ?)';
       let data = [transporte.nome, transporte.valor, transporte.ativo ? 1 : 0];
-      return db.executeSql(sql, data).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
+    }).catch((e) => console.error(JSON.stringify(e)));
   }
 
   public update(transporte: Transporte) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'UPDATE transporte SET nome = ?, valor = ?, ativo = ? where id = ?';
       let data = [transporte.nome, transporte.valor, transporte.ativo ? 1 : 0, transporte.id];
-      return db.executeSql(sql, data).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
+    }).catch((e) => console.error(JSON.stringify(e)));
   }
 
   public remove(id: number) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'DELETE FROM transporte WHERE id = ?';
       let data = [id];
-      return db.executeSql(sql, data).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
+    }).catch((e) => console.error(JSON.stringify(e)));
   }
 
   public get(id: number) {
@@ -47,15 +47,21 @@ export class TransporteProvider {
           return transporte;
         }
         return null;
-      }).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      }).catch((e) => console.error(JSON.stringify(e)));
+    }).catch((e) => console.error(JSON.stringify(e)));
   }
 
   public getAll(ativo: boolean, name: string = null) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'SELECT * FROM transporte ORDER BY nome';
-      var data: any[] = [ativo ? 1 : 0];
+      let sql = 'SELECT * FROM transporte ';
+      var data: any[] = [];
 
+      // filtrando pelo nome
+      if (name) {
+        sql += ' WHERE nome LIKE ?';
+        data.push('%' + name + '%');
+      }
+      sql += ' ORDER BY nome';
       return db.executeSql(sql, data).then((data: any) => {
         if (data.rows.length > 0) {
           let transportes: any[] = [];
@@ -67,8 +73,8 @@ export class TransporteProvider {
         } else {
           return [];
         }
-      }).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      }).catch((e) => console.error(JSON.stringify(e)));
+    }).catch((e) => console.error(JSON.stringify(e)));
   }
 }
 

@@ -1,11 +1,8 @@
-page-transporte {
-    .valor {
-        color: color($colors, secondary);
-    }      
-    .desabilitado{
-        color: #f53d3d;
-    }
+page-transporte {   
     .habilitado{
-        color: #28a745;
+        background-color: #E0F8E0;
+    }
+    .desabilitado{
+        background-color: #F8E0E0;
     }
 }

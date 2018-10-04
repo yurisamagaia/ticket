@@ -9,7 +9,7 @@ export class ConfiguracaoProvider {
 
   public update(configuracao: Configuracao) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'UPDATE configuracao SET evento=?, impressao_ticket=?, segunda_via=?, placa=?, observacoes=?, operador=?, venda=?, estoque=?, estacionamento=?, totais=?, dinheiro=?, cartao=? WHERER id = ?';
+      let sql = 'UPDATE configuracao SET evento=?, impressao_ticket=?, segunda_via=?, placa=?, observacoes=?, operador=?, venda=?, estoque=?, estacionamento=?, totais=?, dinheiro=?, cartao=? WHERE id = ?';
       let data = [
         configuracao.evento, 
         configuracao.impressao_ticket ? 1 : 0, 
@@ -25,15 +25,14 @@ export class ConfiguracaoProvider {
         configuracao.cartao ? 1 : 0,
         configuracao.id
       ];
-      return db.executeSql(sql, data).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
   }
 
   public get() {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'SELECT * FROM configuracao';
-
-      return db.executeSql(sql).then((data: any) => {
+      return db.executeSql(sql, null).then((data: any) => {
         if (data.rows.length > 0) {
           let item = data.rows.item(0);
           let configuracao = new Configuracao();
@@ -53,8 +52,24 @@ export class ConfiguracaoProvider {
           return configuracao;
         }
         return null;
-      }).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      }).catch((e) => console.error(JSON.stringify(e)));
+    }).catch((e) => console.error(JSON.stringify(e)));
+  }
+
+  public getSenha() {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'SELECT senha_adm, senha_root FROM configuracao';
+      return db.executeSql(sql, null).then((data: any) => {
+        if (data.rows.length > 0) {
+          let item = data.rows.item(0);
+          let configuracao = new Configuracao();
+          configuracao.senha_adm = item.senha_adm;
+          configuracao.senha_root = item.senha_root;
+          return configuracao;
+        }
+        return null;
+      }).catch((e) => console.error(JSON.stringify(e)));
+    }).catch((e) => console.error(JSON.stringify(e)));
   }
 }
 
@@ -72,4 +87,6 @@ export class Configuracao {
   totais: number;
   dinheiro: number;
   cartao: number;
+  senha_adm: number;
+  senha_root: number;
 }

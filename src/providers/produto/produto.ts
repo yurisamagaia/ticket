@@ -54,8 +54,16 @@ export class ProdutoProvider {
 
   public getAll(ativo: boolean, name: string = null) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'SELECT * FROM produto ORDER BY nome';
-      var data: any[] = [ativo ? 1 : 0];
+      let sql = 'SELECT * FROM produto ';
+      //var data: any[] = [ativo ? 1 : 0];
+      var data: any[] = [];
+
+      // filtrando pelo nome
+      if (name) {
+        sql += ' WHERE nome LIKE ?';
+        data.push('%' + name + '%');
+      }
+      sql += ' ORDER BY nome';
 
       return db.executeSql(sql, data).then((data: any) => {
         if (data.rows.length > 0) {
