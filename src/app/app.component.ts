@@ -22,11 +22,11 @@ export class MyApp {
   pages: Array<{title: string, component: any, icon: string, pass: boolean}>;
 
   constructor(
-    public platform: Platform, 
-    public statusBar: StatusBar, 
-    public splashScreen: SplashScreen, 
-    private dbProvider: DatabaseProvider, 
-    private alertCtrl: AlertController, 
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    private dbProvider: DatabaseProvider,
+    private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private configuracaoProvider: ConfiguracaoProvider
   ) {
@@ -44,6 +44,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       this.dbProvider.createDatabase().then(() => console.log('Tabelas criadas')).catch((e) => console.error(e));
       this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#fec443');
       this.splashScreen.hide();
     });
   }
@@ -51,7 +52,6 @@ export class MyApp {
   openPage(page) {
     if(page.pass === true) {
       this.configuracaoProvider.getSenha().then((result: any) => {
-        console.log(JSON.stringify(result));
         this.model = result;
         let alert = this.alertCtrl.create({
           title: 'Senha de acesso',
@@ -66,9 +66,7 @@ export class MyApp {
           },{
             text: 'Confirmar',
             handler: data => {
-              console.log(data);
-              console.log(this.model.senha_adm);
-              if(data.senha === result.senha_adm || data.senha === result.senha_root){
+              if(parseInt(data.senha) === result.senha_adm || parseInt(data.senha) === result.senha_root){
                 this.nav.setRoot(page.component);
               }else{
                 this.alerta('Senha não confere');

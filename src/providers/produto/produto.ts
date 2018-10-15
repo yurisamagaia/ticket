@@ -79,6 +79,25 @@ export class ProdutoProvider {
       }).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
   }
+
+  public getLista() {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'SELECT * FROM produto WHERE ativo = 1 ORDER BY nome';
+
+      return db.executeSql(sql, null).then((data: any) => {
+        if (data.rows.length > 0) {
+          let produtos: any[] = [];
+          for (var i = 0; i < data.rows.length; i++) {
+            var produto = data.rows.item(i);
+            produtos.push(produto);
+          }
+          return produtos;
+        } else {
+          return [];
+        }
+      }).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
+  }
 }
 
 export class Produto {

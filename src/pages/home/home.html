@@ -7,12 +7,25 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content text-center>
+  <h3>Pedido</h3>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6 padding (click)="pedido('venda')">
+        <div style="border: 1px solid #f1f1f1" padding-top>
+          <ion-icon name="cart" style="zoom: 3.0"></ion-icon>
+          <h5>Venda</h5>
+        </div>
+      </ion-col>
+      <ion-col col-6 padding (click)="pedido('estacionamento')">
+        <div style="border: 1px solid #f1f1f1" padding-top>
+          <ion-icon name="car" style="zoom: 3.0"></ion-icon>
+          <h5>Estacionamento</h5>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>

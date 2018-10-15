@@ -11,10 +11,12 @@ import { ProdutoEditarPage } from '../pages/produto-editar/produto-editar';
 import { TransportePage } from '../pages/transporte/transporte';
 import { TransporteEditarPage } from '../pages/transporte-editar/transporte-editar';
 import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
+import { PedidoPage } from '../pages/pedido/pedido';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite } from '@ionic-native/sqlite';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { DatabaseProvider } from '../providers/database/database';
 import { ProdutoProvider } from '../providers/produto/produto';
@@ -31,11 +33,13 @@ registerLocaleData(ptBr);
     ProdutoEditarPage,
     TransportePage,
     TransporteEditarPage,
-    ConfiguracaoPage
+    ConfiguracaoPage,
+    PedidoPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -45,7 +49,8 @@ registerLocaleData(ptBr);
     ProdutoEditarPage,
     TransportePage,
     TransporteEditarPage,
-    ConfiguracaoPage
+    ConfiguracaoPage,
+    PedidoPage
   ],
   providers: [
     StatusBar,
