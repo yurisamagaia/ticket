@@ -35,11 +35,15 @@ export class DatabaseProvider {
   private createTables(db: SQLiteObject) {
     // Criando as tabelas
     db.sqlBatch([
-      ['CREATE TABLE IF NOT EXISTS transporte (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, valor REAL, ativo integer)'],
-      ['CREATE TABLE IF NOT EXISTS produto (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, valor REAL, quantidade integer, ativo integer)'],
+      //['DROP TABLE pedido'],
+      //['CREATE TABLE IF NOT EXISTS transporte (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, valor REAL, ativo integer)'],
+      ['CREATE TABLE IF NOT EXISTS pedido (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data DATE, total REAL)'],
+      ['CREATE TABLE IF NOT EXISTS pedido_item (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_produto integer, id_pedido integer, valor REAL, quantidade integer, FOREIGN KEY(id_produto) REFERENCES produto(id), FOREIGN KEY(id_pedido) REFERENCES pedido(id))'],
+
+      ['CREATE TABLE IF NOT EXISTS produto (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, tipo TEXT, valor REAL, quantidade integer, ilimitado integer, ativo integer)'],
       ['CREATE TABLE IF NOT EXISTS configuracao (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, evento TEXT, impressao_ticket integer, segunda_via integer, placa integer, observacoes TEXT, operador TEXT, venda integer, estoque integer, estacionamento integer, totais integer, dinheiro integer, cartao integer, senha_adm integer, senha_root integer)']
       //['CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, price REAL, duedate DATE, active integer, category_id integer, FOREIGN KEY(category_id) REFERENCES categories(id))']
-    ]).then(() => console.log('Tabelas criadas')).catch(e => console.error('Erro ao criar as tabelas', e));
+    ]).then(() => console.log('Tabelas criadas')).catch(e => console.error('Erro ao criar as tabelas', console.log(JSON.stringify(e))));
   }
 
   /**

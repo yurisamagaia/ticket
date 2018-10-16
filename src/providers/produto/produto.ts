@@ -9,16 +9,16 @@ export class ProdutoProvider {
 
   public insert(produto: Produto) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'INSERT INTO produto (nome, valor, quantidade, ativo) VALUES (?, ?, ?, ?)';
-      let data = [produto.nome, produto.valor, produto.quantidade, produto.ativo ? 1 : 0];
+      let sql = 'INSERT INTO produto (nome, tipo, valor, quantidade, ilimitado, ativo) VALUES (?, ?, ?, ?, ?, ?)';
+      let data = [produto.nome, produto.tipo, produto.valor, produto.quantidade, produto.ilimitado ? 1 : 0, produto.ativo ? 1 : 0];
       return db.executeSql(sql, data).catch((e) => console.error(e));
     }).catch((e) => console.error(e));
   }
 
   public update(produto: Produto) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'UPDATE produto SET nome = ?, valor = ?, quantidade = ?, ativo = ? where id = ?';
-      let data = [produto.nome, produto.valor, produto.quantidade, produto.ativo ? 1 : 0, produto.id];
+      let sql = 'UPDATE produto SET nome = ?, tipo = ?, valor = ?, quantidade = ?, ilimitado = ?, ativo = ? where id = ?';
+      let data = [produto.nome, produto.tipo, produto.valor, produto.quantidade, produto.ilimitado ? 1 : 0, produto.ativo ? 1 : 0, produto.id];
       return db.executeSql(sql, data).catch((e) => console.error(e));
     }).catch((e) => console.error(e));
   }
@@ -42,8 +42,10 @@ export class ProdutoProvider {
           let produto = new Produto();
           produto.id = item.id;
           produto.nome = item.nome;
+          produto.tipo = item.tipo;
           produto.valor = item.valor;
           produto.quantidade = item.quantidade;
+          produto.ilimitado = item.ilimitado;
           produto.ativo = item.ativo;
           return produto;
         }
@@ -103,7 +105,9 @@ export class ProdutoProvider {
 export class Produto {
   id: number;
   nome: string;
+  tipo: string = 'produto';
   valor: number;
   quantidade: number;
+  ilimitado: boolean;
   ativo: boolean;
 }

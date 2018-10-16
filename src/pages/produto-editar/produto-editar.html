@@ -11,8 +11,19 @@
       <ion-input type="text" name="nome" [(ngModel)]="model.nome"></ion-input>
     </ion-item>
     <ion-item>
+      <ion-label>Tipo</ion-label>
+      <ion-select [(ngModel)]="model.tipo">
+        <ion-option value="produto">Produto</ion-option>
+        <ion-option value="transporte">Transporte</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
       <ion-label fixed>Valor</ion-label>
       <ion-input type="number" name="valor" [(ngModel)]="model.valor"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ilimitado</ion-label>
+      <ion-toggle name="ilimitado" [(ngModel)]="model.ilimitado" color="primary"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label fixed>Quantidade</ion-label>
@@ -27,4 +38,3 @@
 <ion-footer padding>
   <button ion-button block (click)="salvar()" color="secondary">SALVAR</button>
 </ion-footer>
-  

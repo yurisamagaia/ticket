@@ -22,6 +22,7 @@ import { DatabaseProvider } from '../providers/database/database';
 import { ProdutoProvider } from '../providers/produto/produto';
 import { ConfiguracaoProvider } from '../providers/configuracao/configuracao';
 import { TransporteProvider } from '../providers/transporte/transporte';
+import { PedidoProvider } from '../providers/pedido/pedido';
 
 registerLocaleData(ptBr);
 
@@ -61,7 +62,8 @@ registerLocaleData(ptBr);
     DatabaseProvider,
     ProdutoProvider,
     ConfiguracaoProvider,
-    TransporteProvider
+    TransporteProvider,
+    PedidoProvider
   ]
 })
 export class AppModule {}

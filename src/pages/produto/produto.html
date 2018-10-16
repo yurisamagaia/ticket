@@ -16,7 +16,8 @@
           <ion-row>
             <ion-col col-6>
               <h2>{{ produto.nome }}</h2>
-              <p>{{ produto.quantidade }}un</p>
+              <p *ngIf="produto.ilimitado === 1">Quantidade ilimitada</p>
+              <p *ngIf="produto.ilimitado === 0">{{ produto.quantidade }}un</p>
             </ion-col>
             <ion-col col-6 text-right>
               <h2 class="valor">{{ produto.valor | currency:'BRL':true }}</h2>

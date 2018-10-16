@@ -1,14 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { ProdutoProvider } from '../../providers/produto/produto';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { PedidoProvider } from '../../providers/pedido/pedido';
 import { Storage } from '@ionic/storage';
-
-/**
- * Generated class for the PedidoPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -18,36 +11,58 @@ import { Storage } from '@ionic/storage';
 export class PedidoPage {
 
   produtos: any[] = [];
+  total: any = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private produtoProvider: ProdutoProvider, private storage: Storage) {
-    console.log(this.navParams.data.tipo);
-    this.buscar();
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private pedidoProvider: PedidoProvider,
+    private storage: Storage,
+    private toast: ToastController
+  ) {
+    this.buscar(this.navParams.data.tipo);
   }
 
-  buscar() {
-    this.produtoProvider.getLista().then((result: any[]) => {
+  buscar(tabela) {
+    this.pedidoProvider.getAll(tabela).then((result: any[]) => {
       this.produtos = result;
-      console.log(JSON.stringify(result));
     });
   }
 
   adicionarQuantidade(item) {
-
-    item.qtd = 1;
-
-    console.log(JSON.stringify(item));
-    this.save(item);
+    if(item.quantidade > 0 || item.ilimitado === 1) {
+      (item.qtd ? item.qtd += 1 : item.qtd = 1)
+      item.quantidade -= 1;
+      this.total = this.total + item.valor;
+    }else{
+      this.toast.create({ message: 'Quantidade indisponível', duration: 3000, position: 'top' }).present();
+    }
   }
 
-  save(item) {
-    console.log(item);
-    this.storage.set('pedido', {id: item.id, qtd: item.qtd});
-    this.storage.get('pedido').then(data => {
-      console.log(JSON.stringify(data));
-    })
+  removerQuantidade(item) {
+    if(item.qtd > 0) {
+      item.qtd -= 1;
+      item.quantidade += 1;
+      this.total = this.total - item.valor;
+    }
   }
 
-  ionViewDidLoad() {
+  salvar() {
+    this.salvarItem().then(data => {
+      console.log(data);
+      this.toast.create({ message: 'Item salvo com sucesso', duration: 3000, position: 'top' }).present();
+      this.navCtrl.pop();
+    }).catch(() => {
+      this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
+    });
+  }
 
+  private salvarItem() {
+    return this.pedidoProvider.insertPedido(this.total);
+  }
+
+  limpar() {
+    this.buscar(this.navParams.data.tipo);
+    this.total = 0;
   }
 }

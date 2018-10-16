@@ -22,10 +22,10 @@ export class TransporteEditarPage {
 
   salvar() {
     this.salvarItem().then(() => {
-      this.toast.create({ message: 'Item salvo com sucesso', duration: 3000, position: 'botton' }).present();
+      this.toast.create({ message: 'Item salvo com sucesso', duration: 3000, position: 'top' }).present();
       this.navCtrl.pop();
     }).catch(() => {
-      this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'botton' }).present();
+      this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
     });
   }
 
