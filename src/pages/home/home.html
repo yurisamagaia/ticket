@@ -9,7 +9,36 @@
 
 <ion-content text-center>
   <h3>Pedido</h3>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 padding-left padding-right padding-bottom (click)="pedido('produto')">
+        <div style="border: 1px solid #f1f1f1">
+          <ion-row>
+            <ion-col col-5 text-center style="padding: 23px 0px">
+              <ion-icon name="cart" style="zoom: 3.0"></ion-icon>
+            </ion-col>
+            <ion-col col-7>
+              <h5 padding-top padding-bottom>Venda</h5>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+      <ion-col col-12 padding-left padding-right padding-bottom (click)="pedido('transporte')">
+        <div style="border: 1px solid #f1f1f1">
+          <ion-row>
+            <ion-col col-5 text-center style="padding: 23px 0px">
+              <ion-icon name="car" style="zoom: 3.0"></ion-icon>
+            </ion-col>
+            <ion-col col-7>
+              <h5 padding-top padding-bottom>Estacionamento</h5>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
+<!--
   <ion-grid>
     <ion-row>
       <ion-col col-6 padding (click)="pedido('produto')">
@@ -27,5 +56,5 @@
     </ion-row>
   </ion-grid>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <button ion-button secondary menuToggle>Toggle Menu</button>-->
 </ion-content>

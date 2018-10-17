@@ -17,6 +17,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite } from '@ionic-native/sqlite';
 import { IonicStorageModule } from '@ionic/storage';
+import { DatePipe } from '@angular/common';
 
 import { DatabaseProvider } from '../providers/database/database';
 import { ProdutoProvider } from '../providers/produto/produto';
@@ -63,7 +64,8 @@ registerLocaleData(ptBr);
     ProdutoProvider,
     ConfiguracaoProvider,
     TransporteProvider,
-    PedidoProvider
+    PedidoProvider,
+    DatePipe
   ]
 })
 export class AppModule {}

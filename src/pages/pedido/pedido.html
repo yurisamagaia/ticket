@@ -11,15 +11,15 @@
         <ion-row>
           <ion-col col-6>
             <h2>{{ produto.nome }}</h2>
-            <p *ngIf="produto.ilimitado === 0">{{ produto.quantidade }}un</p>
+            <p *ngIf="produto.ilimitado === 0">{{ produto.estoque }}un</p>
             <p *ngIf="produto.ilimitado === 1">Ilmimitado</p>
             <h2 class="valor">{{ produto.valor | currency:'BRL':true }}</h2>
           </ion-col>
           <ion-col col-6 text-right padding-top>
             <div>
-              <ion-icon name="remove-circle" style="zoom: 2;" color="danger" (click)="removerQuantidade(produto)"></ion-icon>
-              <span style="font-size: 20px; padding-left: 10px; padding-right: 10px;"> {{ produto.qtd > 0 ? produto.qtd : 0 }} </span>
-              <ion-icon name="add-circle" style="zoom: 2;" color="secondary" (click)="adicionarQuantidade(produto)"></ion-icon>
+              <ion-icon name="remove-circle" style="zoom: 1.5;" color="danger" (click)="removerQuantidade(i)"></ion-icon>
+              <span style="font-size: 20px; padding-left: 10px; padding-right: 10px;"> {{ produto.quantidade > 0 ? produto.quantidade : 0 }} </span>
+              <ion-icon name="add-circle" style="zoom: 1.5;" color="secondary" (click)="adicionarQuantidade(i)"></ion-icon>
             </div>
           </ion-col>
         </ion-row>

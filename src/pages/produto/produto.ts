@@ -13,6 +13,7 @@ export class ProdutoPage {
   produtos: any[] = [];
   somenteInativos: boolean = false;
   textoBuscar: string = null;
+  tipo: string = '';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private produtoProvider: ProdutoProvider) { }
 
@@ -20,8 +21,12 @@ export class ProdutoPage {
     this.buscar();
   }
 
+  mudaTipo(tipo) {
+    this.buscar();
+  }
+
   buscar() {
-    this.produtoProvider.getAll(!this.somenteInativos, this.textoBuscar).then((result: any[]) => {
+    this.produtoProvider.getAll(!this.somenteInativos, this.textoBuscar, this.tipo).then((result: any[]) => {
       this.produtos = result;
     });
   }
