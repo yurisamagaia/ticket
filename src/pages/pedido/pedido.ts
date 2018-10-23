@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-import { PedidoProvider } from '../../providers/pedido/pedido';
+import { PedidoProvider, Item } from '../../providers/pedido/pedido';
 import { Storage } from '@ionic/storage';
 
 @IonicPage()
@@ -10,7 +10,9 @@ import { Storage } from '@ionic/storage';
 })
 export class PedidoPage {
 
+  item: Item;
   produtos: any[] = [];
+  itens: any[] = [];
   total: any = 0;
 
   constructor(
@@ -54,25 +56,19 @@ export class PedidoPage {
 
   salvar() {
     this.salvarPedido().then(data => {
-      console.log(JSON.stringify(data.insertId));
-
-      this.salvarPedido().then(data => {
-
-
+      this.salvarItem(data.insertId).then(data => {
         this.toast.create({ message: 'Item salvo com sucesso', duration: 3000, position: 'middle' }).present();
         this.navCtrl.pop();
       }).catch(() => {
         this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'middle' }).present();
       });
-
-
     }).catch(() => {
       this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'middle' }).present();
     });
   }
 
-  private salvarItem() {
-    return this.pedidoProvider.insertPedidoItem(this.produtos);
+  private salvarItem(id_pedido) {
+    return this.pedidoProvider.insertPedidoItem(this.produtos, id_pedido);
   }
 
   private salvarPedido() {
@@ -86,6 +82,9 @@ export class PedidoPage {
 
   busca() {
     this.pedidoProvider.getPedido().then((result: any[]) => {
+      console.log(JSON.stringify(result));
+    });
+    this.pedidoProvider.getItens().then((result: any[]) => {
       console.log(JSON.stringify(result));
     });
   }

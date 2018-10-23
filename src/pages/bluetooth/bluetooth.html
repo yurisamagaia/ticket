@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Conectar impressora
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">
+        <ion-icon name="md-close" style="zoom: 1.5"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <button ion-button block (click)="desconectar()" *ngIf="impressora">Desconectar</button>
+    <ion-list-header no-lines>
+      Dispositivos pareados
+    </ion-list-header>
+    <ion-item *ngFor="let device of pareados" icon-end (color)="primary" (click)="selecionar(device.address)">
+      {{device.name}}
+      <ion-icon name="checkmark" *ngIf="device.address === impressora" item-end></ion-icon>
+    </ion-item>
+    <button ion-button block margin-top (click)="listarNaoPareados()">Escanear dispositivos</button>
+    <ion-list-header no-lines>
+      Dispositivos disponíveis
+    </ion-list-header>
+    <ion-item *ngFor='let device of naoPareados'>
+      <span (click)="selecionar(device.address)">
+        {{device.name}}
+      </span>
+    </ion-item>
+    <div text-center>
+      <ion-spinner name="crescent" *ngIf="spinner"></ion-spinner>
+    </div>
+  </ion-list>
+</ion-content>

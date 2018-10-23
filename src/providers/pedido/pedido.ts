@@ -11,18 +11,22 @@ export class PedidoProvider {
   public insertPedido(total) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'INSERT INTO pedido (data, total) VALUES (?, ?)';
-      let now = this.datepipe.transform(new Date(), "dd/MM/yyyy");
+      let now = this.datepipe.transform(new Date(), "dd/MM/yyyy HH:mm");
       let data = [now, total];
       return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
     }).catch((e) => console.error(e));
   }
 
-  public insertPedidoItem(item) {
+  public insertPedidoItem(item, id_pedido) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'INSERT INTO pedido_item (id_pedido, id_produto, quantidade, valor) VALUES (?, ?, ?, ?)';
-      let data = [item.id_produto, item.id_pedido, item.quantidade, item.valor];
-      return db.executeSql(sql, data).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
+      item.forEach(value => {
+        if(value.quantidade > 0) {
+          let sql = 'INSERT INTO pedido_item (id_pedido, id_produto, nome, quantidade, valor) VALUES (?, ?, ?, ?, ?)';
+          let data = [id_pedido, value.id, value.nome, value.quantidade, value.valor];
+          return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
+        }
+      });
+    }).catch((e) => console.error(JSON.stringify(e)));
   }
 
   public getAll(tabela: String) {
@@ -62,6 +66,25 @@ export class PedidoProvider {
       }).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
   }
+
+  public getItens() {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = "SELECT * FROM pedido_item  ";
+
+      return db.executeSql(sql, null).then((data: any) => {
+        if (data.rows.length > 0) {
+          let produtos: any[] = [];
+          for (var i = 0; i < data.rows.length; i++) {
+            var produto = data.rows.item(i);
+            produtos.push(produto);
+          }
+          return produtos;
+        } else {
+          return [];
+        }
+      }).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
+  }
 }
 
 export class Pedido {
@@ -74,6 +97,7 @@ export class Item {
   id: number;
   id_pedido: number;
   id_produto: number;
+  nome: String;
   quantidade: number;
   valor: number;
 }

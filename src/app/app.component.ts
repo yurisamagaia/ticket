@@ -1,14 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, AlertController, ToastController } from 'ionic-angular';
+import { Nav, Platform, AlertController, ToastController, ModalController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
 import { DatabaseProvider } from '../providers/database/database';
 import { ConfiguracaoProvider, Configuracao } from '../providers/configuracao/configuracao';
 import { HomePage } from '../pages/home/home';
 import { ProdutoPage } from '../pages/produto/produto';
-import { TransportePage } from '../pages/transporte/transporte';
+//import { TransportePage } from '../pages/transporte/transporte';
 import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
+import { BluetoothPage } from '../pages/bluetooth/bluetooth';
+import { Storage } from '@ionic/storage';
+
+import { commands } from '../providers/command/command';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,14 +33,17 @@ export class MyApp {
     private dbProvider: DatabaseProvider,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private configuracaoProvider: ConfiguracaoProvider
+    private configuracaoProvider: ConfiguracaoProvider,
+    private bluetoothSerial: BluetoothSerial,
+    public modalCtrl: ModalController,
+    private storage: Storage
   ) {
     this.initializeApp();
 
     this.pages = [
       { title: 'Home', component: HomePage, icon: 'home', pass: false },
       { title: 'Produtos', component: ProdutoPage, icon: 'cart', pass: true },
-      { title: 'Transportes', component: TransportePage, icon: 'car', pass: true },
+      //{ title: 'Transportes', component: TransportePage, icon: 'car', pass: true },
       { title: 'Configurações', component: ConfiguracaoPage, icon: 'settings', pass: true }
     ];
   }
@@ -46,7 +54,17 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#fec443');
       this.splashScreen.hide();
+      this.bltConectado();
     });
+  }
+
+  bltConectado() {
+    this.bluetoothSerial.isConnected().then((s) => {
+      this.alerta('Impressora conectada');
+    }, (error) => {
+      let profileModal = this.modalCtrl.create(BluetoothPage);
+      profileModal.present();
+    })
   }
 
   openPage(page) {

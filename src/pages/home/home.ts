@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { ConfiguracaoProvider, Configuracao } from '../../providers/configuracao/configuracao';
 import { PedidoPage } from '../../pages/pedido/pedido';
+import { BluetoothPage } from '../../pages/bluetooth/bluetooth';
 
 @Component({
   selector: 'page-home',
@@ -11,7 +12,7 @@ export class HomePage {
 
   model: Configuracao;
 
-  constructor(public navCtrl: NavController, private configuracaoProvider: ConfiguracaoProvider) {
+  constructor(public navCtrl: NavController, private configuracaoProvider: ConfiguracaoProvider, public modalCtrl: ModalController) {
     //this.config();
   }
 
@@ -24,5 +25,10 @@ export class HomePage {
 
   pedido(tipo: String) {
     this.navCtrl.push(PedidoPage, { tipo: tipo });
+  }
+
+  bluetooth() {
+    let profileModal = this.modalCtrl.create(BluetoothPage);
+    profileModal.present();
   }
 }

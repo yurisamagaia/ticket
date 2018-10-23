@@ -11,18 +11,29 @@ export class ConfiguracaoProvider {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'UPDATE configuracao SET evento=?, impressao_ticket=?, segunda_via=?, placa=?, observacoes=?, operador=?, venda=?, estoque=?, estacionamento=?, totais=?, dinheiro=?, cartao=? WHERE id = ?';
       let data = [
-        configuracao.evento, 
-        configuracao.impressao_ticket ? 1 : 0, 
-        configuracao.segunda_via ? 1 : 0, 
-        configuracao.placa ? 1 : 0, 
-        configuracao.observacoes, 
-        configuracao.operador, 
-        configuracao.venda ? 1 : 0, 
-        configuracao.estoque ? 1 : 0, 
+        configuracao.evento,
+        configuracao.impressao_ticket ? 1 : 0,
+        configuracao.segunda_via ? 1 : 0,
+        configuracao.placa ? 1 : 0,
+        configuracao.observacoes,
+        configuracao.operador,
+        configuracao.venda ? 1 : 0,
+        configuracao.estoque ? 1 : 0,
         configuracao.estacionamento ? 1 : 0,
         configuracao.totais ? 1 : 0,
         configuracao.dinheiro ? 1 : 0,
         configuracao.cartao ? 1 : 0,
+        configuracao.id
+      ];
+      return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
+  }
+
+  public updateSenha(configuracao: Configuracao) {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'UPDATE configuracao SET senha_adm=? WHERE id = ?';
+      let data = [
+        configuracao.senha_adm,
         configuracao.id
       ];
       return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));

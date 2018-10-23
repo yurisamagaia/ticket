@@ -12,18 +12,21 @@ import { TransportePage } from '../pages/transporte/transporte';
 import { TransporteEditarPage } from '../pages/transporte-editar/transporte-editar';
 import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
 import { PedidoPage } from '../pages/pedido/pedido';
+import { BluetoothPage } from '../pages/bluetooth/bluetooth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite } from '@ionic-native/sqlite';
 import { IonicStorageModule } from '@ionic/storage';
 import { DatePipe } from '@angular/common';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
 import { DatabaseProvider } from '../providers/database/database';
 import { ProdutoProvider } from '../providers/produto/produto';
 import { ConfiguracaoProvider } from '../providers/configuracao/configuracao';
 import { TransporteProvider } from '../providers/transporte/transporte';
 import { PedidoProvider } from '../providers/pedido/pedido';
+import { CommandProvider } from '../providers/command/command';
 
 registerLocaleData(ptBr);
 
@@ -36,7 +39,8 @@ registerLocaleData(ptBr);
     TransportePage,
     TransporteEditarPage,
     ConfiguracaoPage,
-    PedidoPage
+    PedidoPage,
+    BluetoothPage
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,8 @@ registerLocaleData(ptBr);
     TransportePage,
     TransporteEditarPage,
     ConfiguracaoPage,
-    PedidoPage
+    PedidoPage,
+    BluetoothPage
   ],
   providers: [
     StatusBar,
@@ -65,7 +70,8 @@ registerLocaleData(ptBr);
     ConfiguracaoProvider,
     TransporteProvider,
     PedidoProvider,
-    DatePipe
+    DatePipe,
+    BluetoothSerial
   ]
 })
 export class AppModule {}
