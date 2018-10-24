@@ -35,7 +35,7 @@ export class DatabaseProvider {
   private createTables(db: SQLiteObject) {
     // Criando as tabelas
     db.sqlBatch([
-      //['DROP TABLE pedido'],
+      //['DROP TABLE configuracao'],
       //['DROP TABLE pedido_item'],
       //['DELETE FROM pedido'],
       //['DELETE FROM pedido_item'],
@@ -59,7 +59,7 @@ export class DatabaseProvider {
       if (data.rows.item(0).qtd === 0) {
         // Criando as tabelas
         db.sqlBatch([
-          ['INSERT INTO configuracao (evento, impressao_ticket, segunda_via, placa, observacoes, operador, venda, estoque, estacionamento, totais, dinheiro, cartao, senha_adm, senha_root) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ['', 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 123456, 2167]]
+          ['INSERT INTO configuracao (evento, impressao_ticket, segunda_via, placa, observacoes, operador, venda, estoque, estacionamento, totais, dinheiro, cartao, senha_adm, senha_root) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ['', 0, 0, 0, '', '', 0, 0, 0, 0, 1, 0, 123456, 2167]]
         ]).then(() => console.log('Dados padrões incluídos')).catch(e => console.error('Erro ao incluir dados padrões', e));
       }
     }).catch(e => console.error('Erro ao consultar a qtd de categorias', e));

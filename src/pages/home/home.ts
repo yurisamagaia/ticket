@@ -12,14 +12,19 @@ export class HomePage {
 
   model: Configuracao;
 
-  constructor(public navCtrl: NavController, private configuracaoProvider: ConfiguracaoProvider, public modalCtrl: ModalController) {
-    //this.config();
+  constructor(
+    public navCtrl: NavController,
+    private configuracaoProvider: ConfiguracaoProvider,
+    public modalCtrl: ModalController
+  ) {
+    this.config();
   }
 
   config() {
     this.model = new Configuracao();
     this.configuracaoProvider.get().then((result: any) => {
       this.model = result;
+      console.log(JSON.stringify(result))
     });
   }
 

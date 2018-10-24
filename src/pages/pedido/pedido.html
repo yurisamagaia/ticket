@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Pedido</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="estornar()">
+        Estornar
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -38,7 +43,7 @@
         <div style="font-size: 20px"> {{ total | currency:'BRL':true }} </div>
       </ion-col>
       <ion-col col-4 text-center>
-        <button ion-button color="secondary" type="button" [disabled]="!total" (click)="salvar()">SALVAR</button>
+        <button ion-button color="primary" type="button" [disabled]="!total" (click)="finalizar()">FINALIZAR</button>
       </ion-col>
     </ion-row>
   </ion-grid>

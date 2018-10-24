@@ -59,9 +59,9 @@ export class MyApp {
   }
 
   bltConectado() {
-    this.bluetoothSerial.isConnected().then((s) => {
+    this.bluetoothSerial.isConnected().then(() => {
       this.alerta('Impressora conectada');
-    }, (error) => {
+    }, () => {
       let profileModal = this.modalCtrl.create(BluetoothPage);
       profileModal.present();
     })
@@ -104,7 +104,7 @@ export class MyApp {
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
-      position: 'top'
+      position: 'bottom'
     });
     toast.present();
   }

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ModalController } from 'ionic-angular';
 import { PedidoProvider, Item } from '../../providers/pedido/pedido';
 import { Storage } from '@ionic/storage';
+import { FinalizarPage } from '../../pages/finalizar/finalizar';
 
 @IonicPage()
 @Component({
@@ -20,7 +21,8 @@ export class PedidoPage {
     public navParams: NavParams,
     private pedidoProvider: PedidoProvider,
     private storage: Storage,
-    private toast: ToastController
+    private toast: ToastController,
+    public modalCtrl: ModalController
   ) {
     this.buscar(this.navParams.data.tipo);
     this.busca();
@@ -52,6 +54,19 @@ export class PedidoPage {
       }
       this.total = this.total - this.produtos[item].valor;
     }
+  }
+
+  finalizar() {
+    var itens = [];
+    var total = 0;
+    this.produtos.forEach(value => {
+      if(value.quantidade > 0) {
+        itens.push(value);
+        total += (parseFloat(value.valor)*value.quantidade);
+      }
+    });
+    let profileModal = this.modalCtrl.create(FinalizarPage, {itens: itens, total: total});
+    profileModal.present();
   }
 
   salvar() {

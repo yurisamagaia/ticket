@@ -15,26 +15,26 @@
 <ion-content text-center>
   <ion-grid margin-top>
     <ion-row>
-      <ion-col col-12 padding-left padding-right padding-bottom (click)="pedido('produto')">
+      <ion-col col-12 padding-left padding-right padding-bottom (click)="pedido('produto')" *ngIf="model.venda === 1">
         <div style="border: 1px solid #cdcdcd; background-color: #f1f1f1; border-radius: 5px; box-shadow: 0px 0px 10px #888888">
           <ion-row>
             <ion-col col-5 text-center style="padding: 23px 0px">
               <ion-icon name="cart" style="zoom: 3.0"></ion-icon>
             </ion-col>
             <ion-col col-7>
-              <h5 padding-top padding-bottom>Venda</h5>
+              <h5 padding-top padding-bottom>VENDA</h5>
             </ion-col>
           </ion-row>
         </div>
       </ion-col>
-      <ion-col col-12 padding-left padding-right padding-bottom (click)="pedido('transporte')">
+      <ion-col col-12 padding-left padding-right padding-bottom (click)="pedido('transporte')" *ngIf="model.estacionamento === 1">
         <div style="border: 1px solid #cdcdcd; background-color: #f1f1f1; border-radius: 5px; box-shadow: 0px 0px 10px #888888">
           <ion-row>
             <ion-col col-5 text-center style="padding: 23px 0px">
               <ion-icon name="car" style="zoom: 3.0"></ion-icon>
             </ion-col>
             <ion-col col-7>
-              <h5 padding-top padding-bottom>Estacionamento</h5>
+              <h5 padding-top padding-bottom>ESTACIONAMENTO</h5>
             </ion-col>
           </ion-row>
         </div>

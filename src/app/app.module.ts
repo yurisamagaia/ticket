@@ -13,6 +13,7 @@ import { TransporteEditarPage } from '../pages/transporte-editar/transporte-edit
 import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
 import { PedidoPage } from '../pages/pedido/pedido';
 import { BluetoothPage } from '../pages/bluetooth/bluetooth';
+import { FinalizarPage } from '../pages/finalizar/finalizar';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -40,7 +41,8 @@ registerLocaleData(ptBr);
     TransporteEditarPage,
     ConfiguracaoPage,
     PedidoPage,
-    BluetoothPage
+    BluetoothPage,
+    FinalizarPage
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,8 @@ registerLocaleData(ptBr);
     TransporteEditarPage,
     ConfiguracaoPage,
     PedidoPage,
-    BluetoothPage
+    BluetoothPage,
+    FinalizarPage
   ],
   providers: [
     StatusBar,
