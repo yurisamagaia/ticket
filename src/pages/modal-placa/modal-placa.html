@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Dados do veículo</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">
+        <ion-icon name="md-close" style="zoom: 1.5"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="confirmar()">
+    <ion-list margin-top>
+      <ion-item>
+        <ion-label fixed>Modelo: </ion-label>
+        <ion-input type="text" placeholder="Modelo" [(ngModel)]="model.modelo" name="modelo"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label fixed>Placa: </ion-label>
+        <ion-input type="text" placeholder="Placa" [mask]="'xxx-0000'" [(ngModel)]="model.placa" name="placa" (ngModelChange)="model.placa = $event.toLocaleUpperCase()"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <div padding>
+        <button ion-button block color="primary" type="submit" [disabled]="configuracao.placa === 1 && model.placa?.length < 8">CONFIRMAR</button>
+      </div>
+    </ion-list>
+  </form>
+</ion-content>

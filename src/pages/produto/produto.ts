@@ -11,11 +11,16 @@ import { ProdutoEditarPage } from '../../pages/produto-editar/produto-editar';
 export class ProdutoPage {
 
   produtos: any[] = [];
-  somenteInativos: boolean = false;
   textoBuscar: string = null;
   tipo: string = '';
+  reorder: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private produtoProvider: ProdutoProvider) { }
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private toast: ToastController,
+    private produtoProvider: ProdutoProvider
+  ) { }
 
   ionViewDidEnter() {
     this.buscar();
@@ -26,7 +31,7 @@ export class ProdutoPage {
   }
 
   buscar() {
-    this.produtoProvider.getAll(!this.somenteInativos, this.textoBuscar, this.tipo).then((result: any[]) => {
+    this.produtoProvider.getAll(null, this.textoBuscar, this.tipo).then((result: any[]) => {
       this.produtos = result;
     });
   }
@@ -62,5 +67,25 @@ export class ProdutoPage {
 
   filtrar(ev: any) {
     this.buscar();
+  }
+
+  reorderItems(indexes) {
+    let element = this.produtos[indexes.from];
+    this.produtos.splice(indexes.from, 1);
+    this.produtos.splice(indexes.to, 0, element);
+    this.produtos.forEach((value, index) => {
+      value.ordem = index;
+      this.ordendaItem(value);
+    });
+  }
+
+  private ordendaItem(item) {
+    if (item.id) {
+      return this.produtoProvider.update(item);
+    }
+  }
+
+  reordenar() {
+    (this.reorder === true ? this.reorder = false : this.reorder = true)
   }
 }

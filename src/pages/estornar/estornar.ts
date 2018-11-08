@@ -8,10 +8,10 @@ import { HomePage } from '../../pages/home/home';
 
 @IonicPage()
 @Component({
-  selector: 'page-pedido',
-  templateUrl: 'pedido.html',
+  selector: 'page-estornar',
+  templateUrl: 'estornar.html',
 })
-export class PedidoPage {
+export class EstornarPage {
 
   produtos: any[] = [];
   itens: any[] = [];
@@ -79,15 +79,11 @@ export class PedidoPage {
   }
 
   adicionarQuantidade(item) {
-    if(this.produtos[item].estoque > 0 || this.produtos[item].ilimitado === 1) {
-      (this.produtos[item].quantidade ? this.produtos[item].quantidade += 1 : this.produtos[item].quantidade = 1)
-      if(this.produtos[item].ilimitado === 0) {
-        this.produtos[item].estoque -= 1;
-      }
-      this.total = this.total + this.produtos[item].valor;
-    }else{
-      this.toast.create({ message: 'Quantidade indisponível', duration: 3000, position: 'top' }).present();
+    (this.produtos[item].quantidade ? this.produtos[item].quantidade += 1 : this.produtos[item].quantidade = 1)
+    if(this.produtos[item].ilimitado === 0) {
+      this.produtos[item].estoque -= 1;
     }
+    this.total = this.total + this.produtos[item].valor;
   }
 
   removerQuantidade(item) {

@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Pedido</ion-title>
-    <ion-buttons end>
-      <button ion-button [disabled]="!total" (click)="finalizar('estornar')">
-        Estornar
-      </button>
-    </ion-buttons>
+    <ion-title>Estornar</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -16,8 +11,6 @@
         <ion-row>
           <ion-col col-6>
             <h2>{{ produto.nome }}</h2>
-            <p *ngIf="produto.ilimitado === 0">{{ produto.estoque }}un</p>
-            <p *ngIf="produto.ilimitado === 1">Ilmimitado</p>
             <h2 class="valor">{{ produto.valor | currency:'BRL':true }}</h2>
           </ion-col>
           <ion-col col-6 text-right padding-top *ngIf="tipo === 'produto'">
@@ -46,7 +39,7 @@
         <div style="font-size: 20px"> {{ total | currency:'BRL':true }} </div>
       </ion-col>
       <ion-col col-4 text-center>
-        <button ion-button color="primary" type="button" [disabled]="!total" (click)="finalizar('finalizar')">FINALIZAR</button>
+        <button ion-button color="primary" type="button" [disabled]="!total" (click)="finalizar('finalizar')">ESTORNAR</button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -4,13 +4,19 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Produtos</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="reordenar()">
+        <ion-icon name="arrow-round-up"></ion-icon>
+        <ion-icon name="arrow-round-down"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
   <ion-item>
     <ion-label>Tipo</ion-label>
     <ion-select [(ngModel)]="tipo" (ionChange)="mudaTipo($event)" interface="popover">
       <ion-option value="">Todos</ion-option>
       <ion-option value="produto">Produtos</ion-option>
-      <ion-option value="transporte">Estacionamento</ion-option>
+      <ion-option value="transporte">Transporte</ion-option>
     </ion-select>
   </ion-item>
   <ion-searchbar (ionInput)="filtrar($event)" [(ngModel)]="textoBuscar" placeholder="Buscar"></ion-searchbar>
@@ -18,42 +24,33 @@
 
 <ion-content>
   <ion-list>
-    <ion-item-sliding *ngFor="let produto of produtos" >
-      <button ion-item (click)="editar(produto.id)" [ngClass]="(produto.ativo === 1) ? 'habilitado' : 'desabilitado'">
-        <ion-grid>
-          <ion-row>
-            <ion-col col-6>
-              <h2>{{ produto.nome }}</h2>
-              <p *ngIf="produto.ilimitado === 1">Quantidade ilimitada</p>
-              <p *ngIf="produto.ilimitado === 0">{{ produto.estoque }}un</p>
-            </ion-col>
-            <ion-col col-6 text-right>
-              <h2 class="valor">{{ produto.valor | currency:'BRL':true }}</h2>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </button>
-      <ion-item-options side="left" (ionSwipe)="ativar(item, produto)"></ion-item-options>
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="remover(produto)">
-          <ion-icon name="trash"></ion-icon>
-          Excluir
+    <ion-item-group reorder="{{reorder}}" (ionItemReorder)="reorderItems($event)">
+      <ion-item-sliding *ngFor="let produto of produtos" >
+        <button ion-item (click)="editar(produto.id)" [ngClass]="(produto.ativo === 1) ? 'habilitado' : 'desabilitado'">
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6>
+                <h2>{{ produto.nome }}</h2>
+                <p *ngIf="produto.ilimitado === 1">Quantidade ilimitada</p>
+                <p *ngIf="produto.ilimitado === 0">{{ produto.estoque }}un</p>
+              </ion-col>
+              <ion-col col-6 text-right>
+                <h2 class="valor">{{ produto.valor | currency:'BRL':true }}</h2>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </button>
-      </ion-item-options>
-    </ion-item-sliding>
+        <ion-item-options side="left" (ionSwipe)="ativar(item, produto)"></ion-item-options>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="remover(produto)">
+            <ion-icon name="trash"></ion-icon>
+            Excluir
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
   </ion-list>
   <ion-fab center bottom>
-    <button ion-fab color="secondary" (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab color="secondary" (click)="adicionar()"><ion-icon name="add" style="zoom: 1.5"></ion-icon></button>
   </ion-fab>
 </ion-content>
-<!--<ion-footer>
-  <ion-toolbar>
-    <p>Total: {{ produtos.length }}</p>
-    <ion-list>
-      <ion-item no-lines>
-        <ion-label>Listar inativos</ion-label>
-        <ion-toggle name="listarInativos" [(ngModel)]="somenteInativos" (ionChange)="buscar()"></ion-toggle>
-      </ion-item>
-    </ion-list>
-  </ion-toolbar>
-</ion-footer>-->

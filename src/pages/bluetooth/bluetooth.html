@@ -22,15 +22,13 @@
       <ion-icon name="checkmark" *ngIf="device.address === impressora" item-end></ion-icon>
     </ion-item>
     <button ion-button block margin-top (click)="listarNaoPareados()">Escanear impressoras</button>
-    <ion-list-header no-lines>
+    <ion-list-header no-lines *ngIf="naoPareados?.length > 0">
       Dispositivos disponíveis
     </ion-list-header>
-    <ion-item *ngFor='let device of naoPareados'>
-      <span (click)="selecionar(device.address)">
-        {{device.name}}
-      </span>
+    <ion-item *ngFor='let device of naoPareados' (click)="selecionar(device.address)">
+      {{device.name}}
     </ion-item>
-    <div text-center>
+    <div text-center padding>
       <ion-spinner name="crescent" *ngIf="spinner"></ion-spinner>
     </div>
   </ion-list>

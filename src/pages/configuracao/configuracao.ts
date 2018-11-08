@@ -26,9 +26,9 @@ export class ConfiguracaoPage {
 
   salvar() {
     this.salvarItem().then(() => {
-      this.toast.create({ message: 'Configurações salvas com sucesso', duration: 3000, position: 'middle' }).present();
+      this.toast.create({ message: 'Configurações salvas com sucesso', duration: 3000, position: 'bottom' }).present();
     }).catch(() => {
-      this.toast.create({ message: 'Erro ao salvar configurações', duration: 3000, position: 'middle' }).present();
+      this.toast.create({ message: 'Erro ao salvar configurações', duration: 3000, position: 'bottom' }).present();
     });
   }
 
@@ -65,16 +65,16 @@ export class ConfiguracaoPage {
                 if(data.senha_nova === data.senha_confirma) {
                   this.model.senha_adm = data.senha_nova;
                   this.salvarSenha().then(() => {
-                    this.toast.create({ message: 'Senha alterada com sucesso', duration: 3000, position: 'middle' }).present();
+                    this.toast.create({ message: 'Senha alterada com sucesso', duration: 3000, position: 'bottom' }).present();
                   }).catch(e => {
-                    this.toast.create({ message: e, duration: 3000, position: 'middle' }).present();
+                    this.toast.create({ message: e, duration: 3000, position: 'bottom' }).present();
                   });
                 }else{
-                  this.toast.create({ message: 'Senha e Confirmar senha não conferem', duration: 3000, position: 'middle' }).present();
+                  this.toast.create({ message: 'Senha e Confirmar senha não conferem', duration: 3000, position: 'bottom' }).present();
                   this.alterarSenha();
                 }
               }else{
-                this.toast.create({ message: 'Senha antiga incorreta', duration: 3000, position: 'middle' }).present();
+                this.toast.create({ message: 'Senha antiga incorreta', duration: 3000, position: 'bottom' }).present();
                 this.alterarSenha();
               }
             });

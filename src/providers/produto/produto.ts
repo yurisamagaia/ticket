@@ -9,16 +9,16 @@ export class ProdutoProvider {
 
   public insert(produto: Produto) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'INSERT INTO produto (nome, tipo, valor, estoque, ilimitado, ativo) VALUES (?, ?, ?, ?, ?, ?)';
-      let data = [produto.nome, produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, produto.ativo ? 1 : 0];
+      let sql = 'INSERT INTO produto (nome, tipo, valor, estoque, ilimitado, ordem, ativo) VALUES (?, ?, ?, ?, ?, ?, ?)';
+      let data = [produto.nome, produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, 0, produto.ativo ? 1 : 0];
       return db.executeSql(sql, data).catch((e) => console.error(e));
     }).catch((e) => console.error(e));
   }
 
   public update(produto: Produto) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'UPDATE produto SET nome = ?, tipo = ?, valor = ?, estoque = ?, ilimitado = ?, ativo = ? where id = ?';
-      let data = [produto.nome, produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, produto.ativo ? 1 : 0, produto.id];
+      let sql = 'UPDATE produto SET nome = ?, tipo = ?, valor = ?, estoque = ?, ilimitado = ?, ordem = ?, ativo = ? where id = ?';
+      let data = [produto.nome, produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, produto.ordem, produto.ativo ? 1 : 0, produto.id];
       return db.executeSql(sql, data).catch((e) => console.error(e));
     }).catch((e) => console.error(e));
   }
@@ -46,6 +46,7 @@ export class ProdutoProvider {
           produto.valor = item.valor;
           produto.estoque = item.estoque;
           produto.ilimitado = item.ilimitado;
+          produto.ordem = item.ordem;
           produto.ativo = item.ativo;
           return produto;
         }
@@ -69,7 +70,11 @@ export class ProdutoProvider {
         sql += ' AND tipo = ? ';
         data.push(tipo);
       }
-      sql += ' ORDER BY nome';
+      if (ativo) {
+        sql += ' AND ativo = ? ';
+        data.push(1);
+      }
+      sql += ' ORDER BY ordem';
 
       return db.executeSql(sql, data).then((data: any) => {
         if (data.rows.length > 0) {
@@ -113,5 +118,6 @@ export class Produto {
   valor: number;
   estoque: number;
   ilimitado: boolean;
+  ordem: number;
   ativo: boolean;
 }

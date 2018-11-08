@@ -20,7 +20,9 @@ export const commands = {
   EOL: '\n',
   HORIZONTAL_LINE: {
     HR_58MM: '================================',
-    HR2_58MM: '********************************'
+    HR2_58MM: '********************************',
+    HR3_58MM: '--------------------------------',
+    HR4_58MM: '-----------CORTE AQUI-----------'
   },
   FEED_CONTROL_SEQUENCES: {
     CTL_LF: '\x0a', // Print and line feed

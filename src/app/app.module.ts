@@ -14,6 +14,8 @@ import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
 import { PedidoPage } from '../pages/pedido/pedido';
 import { BluetoothPage } from '../pages/bluetooth/bluetooth';
 import { FinalizarPage } from '../pages/finalizar/finalizar';
+import { ModalPlacaPage } from '../pages/modal-placa/modal-placa';
+import { EstornarPage } from '../pages/estornar/estornar';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,11 +31,14 @@ import { TransporteProvider } from '../providers/transporte/transporte';
 import { PedidoProvider } from '../providers/pedido/pedido';
 import { CommandProvider } from '../providers/command/command';
 
+import { MaskInput } from 'mask-ioni-3/mask-input';
+
 registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
     MyApp,
+    MaskInput,
     HomePage,
     ProdutoPage,
     ProdutoEditarPage,
@@ -42,7 +47,9 @@ registerLocaleData(ptBr);
     ConfiguracaoPage,
     PedidoPage,
     BluetoothPage,
-    FinalizarPage
+    FinalizarPage,
+    ModalPlacaPage,
+    EstornarPage
   ],
   imports: [
     BrowserModule,
@@ -60,7 +67,9 @@ registerLocaleData(ptBr);
     ConfiguracaoPage,
     PedidoPage,
     BluetoothPage,
-    FinalizarPage
+    FinalizarPage,
+    ModalPlacaPage,
+    EstornarPage
   ],
   providers: [
     StatusBar,

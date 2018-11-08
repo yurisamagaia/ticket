@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>Dashboard</ion-title>
     <ion-buttons end>
       <button ion-button (click)="bluetooth()">
         <ion-icon name="print" style="zoom: 1.5"></ion-icon>
@@ -39,8 +39,25 @@
           </ion-row>
         </div>
       </ion-col>
+      <ion-col col-12 padding-left padding-right padding-bottom (click)="estornar()">
+        <div style="border: 1px solid #cdcdcd; background-color: #f1f1f1; border-radius: 5px; box-shadow: 0px 0px 10px #888888">
+          <ion-row>
+            <ion-col col-5 text-center style="padding: 23px 0px">
+              <ion-icon name="cash" style="zoom: 3.0"></ion-icon>
+            </ion-col>
+            <ion-col col-7>
+              <h5 padding-top padding-bottom style="color: #f53d3d">ESTORNAR</h5>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
     </ion-row>
   </ion-grid>
+  <div padding>
+    <button ion-button block color="dark" type="button" (click)="relatorio()">RELATÓRIO</button>
+    <button ion-button block color="primary" type="button" (click)="fecharCaixa()">FECHAR CAIXA</button>
+  </div>
+
 
 <!--
   <ion-grid>
