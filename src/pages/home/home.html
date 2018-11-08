@@ -39,7 +39,7 @@
           </ion-row>
         </div>
       </ion-col>
-      <ion-col col-12 padding-left padding-right padding-bottom (click)="estornar()">
+      <ion-col col-12 padding-left padding-right padding-bottom (click)="estornar()" *ngIf="model.estacionamento === 1 || model.venda === 1">
         <div style="border: 1px solid #cdcdcd; background-color: #f1f1f1; border-radius: 5px; box-shadow: 0px 0px 10px #888888">
           <ion-row>
             <ion-col col-5 text-center style="padding: 23px 0px">

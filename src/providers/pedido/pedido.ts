@@ -8,7 +8,7 @@ import { ProdutoProvider } from '../produto/produto';
 @Injectable()
 export class PedidoProvider {
 
-  constructor(private dbProvider: DatabaseProvider, private datepipe: DatePipe, private produtoProvider: ProdutoProvider,) { }
+  constructor(private dbProvider: DatabaseProvider, private datepipe: DatePipe, private produtoProvider: ProdutoProvider) { }
 
   public insertPedido(total) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {

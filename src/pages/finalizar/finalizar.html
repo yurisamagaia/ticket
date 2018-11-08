@@ -34,7 +34,27 @@
 </ion-content>
 <ion-footer style="background-color: #F2F2F2;">
   <h4 margin-top text-center>Total: {{ total | currency:'BRL':true }}</h4>
-  <ion-grid no-margin padding *ngIf="tipo === 'finalizar'">
+  <ion-row *ngIf="tipo === 'finalizar'">
+    <ion-col>
+      <ion-item style="border: 1px solid #D8D8D8">
+        <ion-input type="number" style="border-bottom: none !important" [(ngModel)]="valorPago" (keyup)="calculaTroco()" name="valorPago" placeholder="Valor Pago"></ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+      <h4 padding-top text-center>Troco: {{ troco | currency:'BRL':true }}</h4>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <button ion-button block [color]="formaPagamento === 'dinheiro' ? 'primary' : 'light'"  type="button" (click)="formaPagamentoEstorno('dinheiro')">DINHEIRO</button>
+    </ion-col>
+    <ion-col>
+      <button ion-button block [color]="formaPagamento === 'cartão' ? 'primary' : 'light'" type="button" (click)="formaPagamentoEstorno('cartão')">CARTÃO</button>
+    </ion-col>
+  </ion-row>
+
+
+  <!--<ion-grid no-margin padding *ngIf="tipo === 'finalizar'">
     <ion-row>
       <ion-col col-6>
         <ion-item style="border: 1px solid #D8D8D8">
@@ -61,7 +81,7 @@
         <button ion-button block [color]="formaPagamento === 'cartão' ? 'primary' : 'light'" type="button" (click)="formaPagamentoEstorno('cartão')">CARTÃO</button>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid>-->
   <div padding-left padding-right padding-bottom>
     <button ion-button block color="dark" type="button" (click)="imprimir()" *ngIf="tipo === 'finalizar'">IMPRIMIR</button>
     <button ion-button block color="dark" type="button" (click)="estornar()" *ngIf="tipo === 'estornar'">ESTORNAR</button>

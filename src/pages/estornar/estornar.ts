@@ -48,7 +48,7 @@ export class EstornarPage {
         produto.quantidade = 1;
         ar_pedido.push(produto);
         total = produto.valor * produto.quantidade;
-        let finalizarModal = this.modalCtrl.create(FinalizarPage, {itens: ar_pedido, total: total, tipo: 'finalizar'});
+        let finalizarModal = this.modalCtrl.create(FinalizarPage, {itens: ar_pedido, total: total, tipo: 'estornar'});
         finalizarModal.onDidDismiss(data => {
           if(data === 'finalizar') {
             this.navCtrl.setRoot(HomePage);
@@ -60,7 +60,7 @@ export class EstornarPage {
     profileModal.present();
   }
 
-  finalizar(tipo) {
+  finalizar() {
     var itens = [];
     var total = 0;
     this.produtos.forEach(value => {
@@ -69,7 +69,7 @@ export class EstornarPage {
         total += (parseFloat(value.valor)*value.quantidade);
       }
     });
-    let profileModal = this.modalCtrl.create(FinalizarPage, {itens: itens, total: total, tipo: tipo});
+    let profileModal = this.modalCtrl.create(FinalizarPage, {itens: itens, total: total, tipo: 'estornar'});
     profileModal.onDidDismiss(data => {
       if(data === 'finalizar') {
         this.navCtrl.setRoot(HomePage);

@@ -6,6 +6,7 @@ import { EstornarPage } from '../../pages/estornar/estornar';
 import { BluetoothPage } from '../../pages/bluetooth/bluetooth';
 
 import { PedidoProvider } from '../../providers/pedido/pedido';
+import { EstornarProvider } from '../../providers/estornar/estornar';
 
 @Component({
   selector: 'page-home',
@@ -20,10 +21,18 @@ export class HomePage {
     private configuracaoProvider: ConfiguracaoProvider,
     public modalCtrl: ModalController,
     private pedidoProvider: PedidoProvider,
+    private estornarProvider: EstornarProvider,
     public actionSheetCtrl: ActionSheetController
   ) {
     this.config();
     this.buscaTeste();
+    this.estorn();
+  }
+
+  estorn() {
+    this.estornarProvider.getAll().then((result: any[]) => {
+      console.log(JSON.stringify(result));
+    })
   }
 
   buscaTeste() {
@@ -53,25 +62,26 @@ export class HomePage {
   }
 
   estornar() {
-    const actionSheet = this.actionSheetCtrl.create({
-      title: 'Estornar',
-      buttons: [
-        {
-          text: 'Venda',
-          handler: () => {
-            this.navCtrl.push(EstornarPage, { tipo: 'produto' });
-          }
-        },{
-          text: 'Estacionamento',
-          handler: () => {
-            this.navCtrl.push(EstornarPage, { tipo: 'transporte' });
-          }
-        },{
-          text: 'Cancelar',
-          role: 'cancel'
-        }
-      ]
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Estornar'
     });
+    if(this.model.venda === 1) {
+      actionSheet.addButton({
+        text: 'Venda',
+        handler: () => {
+          this.navCtrl.push(EstornarPage, { tipo: 'produto' });
+        }
+      });
+    }
+    if(this.model.estacionamento === 1) {
+      actionSheet.addButton({
+        text: 'Estacionamento',
+        handler: () => {
+          this.navCtrl.push(EstornarPage, { tipo: 'transporte' });
+        }
+      });
+    }
+    actionSheet.addButton({text: 'Cancel', 'role': 'cancel' });
     actionSheet.present();
   }
 }

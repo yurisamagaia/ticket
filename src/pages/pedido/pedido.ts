@@ -60,7 +60,7 @@ export class PedidoPage {
     profileModal.present();
   }
 
-  finalizar(tipo) {
+  finalizar() {
     var itens = [];
     var total = 0;
     this.produtos.forEach(value => {
@@ -69,7 +69,7 @@ export class PedidoPage {
         total += (parseFloat(value.valor)*value.quantidade);
       }
     });
-    let profileModal = this.modalCtrl.create(FinalizarPage, {itens: itens, total: total, tipo: tipo});
+    let profileModal = this.modalCtrl.create(FinalizarPage, {itens: itens, total: total, tipo: 'finalizar'});
     profileModal.onDidDismiss(data => {
       if(data === 'finalizar') {
         this.navCtrl.setRoot(HomePage);

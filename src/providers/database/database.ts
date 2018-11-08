@@ -42,6 +42,7 @@ export class DatabaseProvider {
       //['CREATE TABLE IF NOT EXISTS transporte (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, valor REAL, ativo integer)'],
       ['CREATE TABLE IF NOT EXISTS pedido (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, data DATE, total REAL)'],
       ['CREATE TABLE IF NOT EXISTS pedido_item (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_pedido integer, id_produto integer, nome TEXT, quantidade integer, valor REAL, FOREIGN KEY(id_produto) REFERENCES produto(id), FOREIGN KEY(id_pedido) REFERENCES pedido(id))'],
+      ['CREATE TABLE IF NOT EXISTS estornar (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_produto integer, nome TEXT, quantidade integer, valor REAL, FOREIGN KEY(id_produto) REFERENCES produto(id))'],
 
       ['CREATE TABLE IF NOT EXISTS produto (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, tipo TEXT, valor REAL, estoque integer, ilimitado integer, ordem integer, ativo integer)'],
       ['CREATE TABLE IF NOT EXISTS configuracao (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, evento TEXT, impressao_ticket integer, segunda_via integer, placa integer, observacoes TEXT, operador TEXT, venda integer, estoque integer, estacionamento integer, totais integer, dinheiro integer, cartao integer, senha_adm integer, senha_root integer)']

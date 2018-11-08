@@ -6,6 +6,7 @@ import { HomePage } from '../../pages/home/home';
 import { BluetoothPage } from '../../pages/bluetooth/bluetooth';
 import { PedidoProvider } from '../../providers/pedido/pedido';
 import { ConfiguracaoProvider, Configuracao } from '../../providers/configuracao/configuracao';
+import { EstornarProvider } from '../../providers/estornar/estornar';
 import { commands } from '../../providers/command/command';
 
 @IonicPage()
@@ -33,13 +34,22 @@ export class FinalizarPage {
     private pedidoProvider: PedidoProvider,
     private bluetoothSerial: BluetoothSerial,
     public modalCtrl: ModalController,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    private estornarProvider: EstornarProvider
   ) {
     this.produtos = navParams.get('itens');
     this.total = navParams.get('total');
     this.tipo = navParams.get('tipo');
-    console.log(JSON.stringify(this.produtos));
     this.config();
+  }
+
+  estornar() {
+    this.estornarProvider.estornar(this.produtos).then(data => {
+      this.toast.create({ message: 'Pedido estornado com sucesso', duration: 4000, position: 'bottom' }).present();
+      this.viewCtrl.dismiss('finalizar');
+    }).catch(() => {
+      this.toast.create({ message: 'Erro ao salvar estorno', duration: 3000, position: 'top' }).present();
+    });
   }
 
   imprimir() {
@@ -68,19 +78,6 @@ export class FinalizarPage {
     let profileModal = this.modalCtrl.create(BluetoothPage);
     profileModal.present();
   }
-
-  /*salvar() {
-    this.salvarPedido().then(data => {
-      this.salvarItem(data.insertId).then(data => {
-        this.toast.create({ message: 'Item salvo com sucesso', duration: 3000, position: 'top' }).present();
-        this.navCtrl.pop();
-      }).catch(() => {
-        this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
-      });
-    }).catch(() => {
-      this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
-    });
-  }*/
 
   private salvarItem(id_pedido) {
     return this.pedidoProvider.insertPedidoItem(this.produtos, id_pedido);
@@ -153,10 +150,6 @@ export class FinalizarPage {
 
   formaPagamentoEstorno(pagamento) {
     this.formaPagamento = pagamento;
-  }
-
-  estornar() {
-
   }
 
   print() {
@@ -351,7 +344,7 @@ export class FinalizarPage {
     this.salvarPedido().then(data => {
       this.salvarItem(data.insertId).then(data => {
         this.bluetoothSerial.write(receipt).then(() => {
-          this.toast.create({ message: 'Pedido realizado com sucesso. Aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
+          this.toast.create({ message: 'Pedido realizado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
           this.viewCtrl.dismiss('finalizar');
         }, (error) => {
           let alert = this.alertCtrl.create({
