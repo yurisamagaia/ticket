@@ -10,11 +10,12 @@ export class PedidoProvider {
 
   constructor(private dbProvider: DatabaseProvider, private datepipe: DatePipe, private produtoProvider: ProdutoProvider) { }
 
-  public insertPedido(total) {
+  public insertPedido(total, forma_pagamento) {
+    (forma_pagamento === 'dinheiro' ? forma_pagamento = 'dinheiro' : forma_pagamento = 'cartao');
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'INSERT INTO pedido (data, total) VALUES (?, ?)';
+      let sql = 'INSERT INTO pedido (data, forma_pagamento, total) VALUES (?, ?, ?)';
       let now = this.datepipe.transform(new Date(), "dd/MM/yyyy HH:mm:ss");
-      let data = [now, total];
+      let data = [now, forma_pagamento, total];
       return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
     }).catch((e) => console.error(e));
   }

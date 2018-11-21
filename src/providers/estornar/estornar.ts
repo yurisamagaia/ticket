@@ -3,7 +3,6 @@ import { SQLiteObject } from '@ionic-native/sqlite';
 import { DatabaseProvider } from '../database/database';
 import { ProdutoProvider } from '../produto/produto';
 
-
 @Injectable()
 export class EstornarProvider {
 
@@ -41,6 +40,24 @@ export class EstornarProvider {
           return estornos;
         } else {
           return [];
+        }
+      }).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
+  }
+
+  public getTotal() {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'SELECT * FROM estornar';
+
+      return db.executeSql(sql, null).then((data: any) => {
+        var total: any = 0;
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            total += (parseFloat(data.rows.item(i).quantidade) * parseFloat(data.rows.item(i).valor));
+          }
+          return total;
+        } else {
+          return total;
         }
       }).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));

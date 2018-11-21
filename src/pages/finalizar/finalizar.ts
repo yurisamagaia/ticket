@@ -7,6 +7,7 @@ import { BluetoothPage } from '../../pages/bluetooth/bluetooth';
 import { PedidoProvider } from '../../providers/pedido/pedido';
 import { ConfiguracaoProvider, Configuracao } from '../../providers/configuracao/configuracao';
 import { EstornarProvider } from '../../providers/estornar/estornar';
+import { ImprimirProvider } from '../../providers/imprimir/imprimir';
 import { commands } from '../../providers/command/command';
 
 @IonicPage()
@@ -35,7 +36,8 @@ export class FinalizarPage {
     private bluetoothSerial: BluetoothSerial,
     public modalCtrl: ModalController,
     private datepipe: DatePipe,
-    private estornarProvider: EstornarProvider
+    private estornarProvider: EstornarProvider,
+    private imprimirProvider: ImprimirProvider
   ) {
     this.produtos = navParams.get('itens');
     this.total = navParams.get('total');
@@ -84,7 +86,7 @@ export class FinalizarPage {
   }
 
   private salvarPedido() {
-    return this.pedidoProvider.insertPedido(this.total);
+    return this.pedidoProvider.insertPedido(this.total, this.formaPagamento);
   }
 
   config() {

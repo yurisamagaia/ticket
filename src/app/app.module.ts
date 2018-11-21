@@ -33,6 +33,8 @@ import { CommandProvider } from '../providers/command/command';
 
 import { MaskInput } from 'mask-ioni-3/mask-input';
 import { EstornarProvider } from '../providers/estornar/estornar';
+import { RelatorioProvider } from '../providers/relatorio/relatorio';
+import { ImprimirProvider } from '../providers/imprimir/imprimir';
 
 registerLocaleData(ptBr);
 
@@ -85,7 +87,9 @@ registerLocaleData(ptBr);
     PedidoProvider,
     DatePipe,
     BluetoothSerial,
-    EstornarProvider
+    EstornarProvider,
+    RelatorioProvider,
+    ImprimirProvider
   ]
 })
 export class AppModule {}

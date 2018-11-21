@@ -60,6 +60,7 @@ export class ConfiguracaoProvider {
           configuracao.totais = item.totais;
           configuracao.dinheiro = item.dinheiro;
           configuracao.cartao = item.cartao;
+          configuracao.sangria = item.sangria;
           return configuracao;
         }
         return null;
@@ -100,4 +101,5 @@ export class Configuracao {
   cartao: number;
   senha_adm: number;
   senha_root: number;
+  sangria: number;
 }

@@ -21,7 +21,7 @@ import { commands } from '../providers/command/command';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = null;
   model: Configuracao;
 
   pages: Array<{title: string, component: any, icon: string, pass: boolean}>;
@@ -54,6 +54,7 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.statusBar.backgroundColorByHexString('#fec443');
       this.splashScreen.hide();
+      this.rootPage = HomePage;
       this.bltConectado();
     });
   }
