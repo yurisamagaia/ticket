@@ -89,6 +89,11 @@ export class FinalizarPage {
     return this.pedidoProvider.insertPedido(this.total, this.formaPagamento);
   }
 
+  private salvarTroco() {
+    this.configuracao.troco += this.troco;
+    return this.configuracaoProvider.updateTroco(this.configuracao);
+  }
+
   config() {
     this.configuracao = new Configuracao();
     this.configuracaoProvider.get().then((result: any) => {
@@ -343,24 +348,28 @@ export class FinalizarPage {
 
     receipt = this.noSpecialChars(receipt);
 
-    this.salvarPedido().then(data => {
-      this.salvarItem(data.insertId).then(data => {
-        this.bluetoothSerial.write(receipt).then(() => {
-          this.toast.create({ message: 'Pedido realizado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
-          this.viewCtrl.dismiss('finalizar');
-        }, (error) => {
-          let alert = this.alertCtrl.create({
-            title: 'Erro',
-            message: error,
-            buttons: [{ text: 'Concluir' }]
+    this.salvarTroco().then(() => {
+      this.salvarPedido().then(data => {
+        this.salvarItem(data.insertId).then(() => {
+          this.bluetoothSerial.write(receipt).then(() => {
+            this.toast.create({ message: 'Pedido realizado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
+            this.viewCtrl.dismiss('finalizar');
+          }, (error) => {
+            let alert = this.alertCtrl.create({
+              title: 'Erro',
+              message: error,
+              buttons: [{ text: 'Concluir' }]
+            });
+            alert.present();
           });
-          alert.present();
+        }).catch(() => {
+          this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
         });
       }).catch(() => {
-        this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
+        this.toast.create({ message: 'Erro ao salvar pedido', duration: 3000, position: 'top' }).present();
       });
     }).catch(() => {
-      this.toast.create({ message: 'Erro ao salvar pedido', duration: 3000, position: 'top' }).present();
+      this.toast.create({ message: 'Erro ao salvar troco', duration: 3000, position: 'top' }).present();
     });
   }
 

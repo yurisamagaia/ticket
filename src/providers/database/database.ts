@@ -28,6 +28,17 @@ export class DatabaseProvider {
     }).catch(e => console.log(JSON.stringify(e)));
   }
 
+  public clearDatabase() {
+    return this.getDB().then((db: SQLiteObject) => {
+      this.clearTables(db);
+      this.insertDefaultItems(db);
+      return true;
+    }).catch(e => {
+      console.log(JSON.stringify(e));
+      return false;
+    });
+  }
+
   /**
    * Criando as tabelas no banco de dados
    * @param db
@@ -35,7 +46,7 @@ export class DatabaseProvider {
   private createTables(db: SQLiteObject) {
     // Criando as tabelas
     db.sqlBatch([
-      //['DROP TABLE produto'],
+      //['DROP TABLE configuracao'],
       //['DROP TABLE pedido_item'],
       //['DELETE FROM pedido'],
       //['DELETE FROM pedido_item'],
@@ -45,7 +56,7 @@ export class DatabaseProvider {
       ['CREATE TABLE IF NOT EXISTS estornar (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_produto integer, nome TEXT, quantidade integer, valor REAL, FOREIGN KEY(id_produto) REFERENCES produto(id))'],
 
       ['CREATE TABLE IF NOT EXISTS produto (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, tipo TEXT, valor REAL, estoque integer, ilimitado integer, ordem integer, ativo integer)'],
-      ['CREATE TABLE IF NOT EXISTS configuracao (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, evento TEXT, impressao_ticket integer, segunda_via integer, placa integer, observacoes TEXT, operador TEXT, venda integer, estoque integer, estacionamento integer, totais integer, dinheiro integer, cartao integer, sangria REAL, senha_adm integer, senha_root integer)']
+      ['CREATE TABLE IF NOT EXISTS configuracao (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, evento TEXT, impressao_ticket integer, segunda_via integer, placa integer, observacoes TEXT, operador TEXT, venda integer, estoque integer, estacionamento integer, totais integer, dinheiro integer, cartao integer, sangria REAL, troco REAL, senha_adm integer, senha_root integer)']
       //['CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, price REAL, duedate DATE, active integer, category_id integer, FOREIGN KEY(category_id) REFERENCES categories(id))']
     ]).then(() => console.log('Tabelas criadas')).catch(e => console.error('Erro ao criar as tabelas', console.log(JSON.stringify(e))));
   }
@@ -60,9 +71,19 @@ export class DatabaseProvider {
       if (data.rows.item(0).qtd === 0) {
         // Criando as tabelas
         db.sqlBatch([
-          ['INSERT INTO configuracao (evento, impressao_ticket, segunda_via, placa, observacoes, operador, venda, estoque, estacionamento, totais, dinheiro, cartao, sangria, senha_adm, senha_root) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ['', 0, 0, 0, '', '', 0, 0, 0, 0, 1, 0, 0, 123456, 2167]]
+          ['INSERT INTO configuracao (evento, impressao_ticket, segunda_via, placa, observacoes, operador, venda, estoque, estacionamento, totais, dinheiro, cartao, sangria, troco, senha_adm, senha_root) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ['', 0, 0, 0, '', '', 0, 0, 0, 0, 1, 0, 0, 0, 123456, 2167]]
         ]).then(() => console.log('Dados padrões incluídos')).catch(e => console.error('Erro ao incluir dados padrões', e));
       }
     }).catch(e => console.error('Erro ao consultar a qtd de categorias', e));
+  }
+
+  private clearTables(db: SQLiteObject) {
+    db.sqlBatch([
+      //['DELETE FROM pedido'],
+      //['DELETE FROM pedido_item'],
+      //['DELETE FROM estornar'],
+      ['DELETE FROM produto'],
+      ['DELETE FROM configuracao']
+    ]).then(() => console.log('Tabelas criadas')).catch(e => console.error('Erro ao criar as tabelas', console.log(JSON.stringify(e))));
   }
 }

@@ -40,6 +40,17 @@ export class ConfiguracaoProvider {
     }).catch((e) => console.log(JSON.stringify(e)));
   }
 
+  public updateTroco(configuracao: Configuracao) {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'UPDATE configuracao SET troco = ? WHERE id = ?';
+      let data = [
+        configuracao.troco,
+        configuracao.id
+      ];
+      return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
+  }
+
   public get() {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'SELECT * FROM configuracao';
@@ -61,6 +72,7 @@ export class ConfiguracaoProvider {
           configuracao.dinheiro = item.dinheiro;
           configuracao.cartao = item.cartao;
           configuracao.sangria = item.sangria;
+          configuracao.troco = item.troco;
           return configuracao;
         }
         return null;
@@ -102,4 +114,5 @@ export class Configuracao {
   senha_adm: number;
   senha_root: number;
   sangria: number;
+  troco: number;
 }

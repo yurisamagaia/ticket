@@ -48,15 +48,15 @@ export class ProdutoPage {
     this.produtoProvider.remove(produto.id).then(() => {
       var index = this.produtos.indexOf(produto);
       this.produtos.splice(index, 1);
-      this.toast.create({ message: 'Item removido com sucesso', duration: 3000, position: 'botton' }).present();
+      this.toast.create({ message: 'Item removido com sucesso', duration: 3000, position: 'top' }).present();
     });
   }
 
   ativar(item: ItemSliding, produto: Produto) {
     this.salvarItem(produto).then(() => {
-      this.toast.create({ message: 'Item salvo com sucesso', duration: 3000, position: 'botton' }).present();
+      this.toast.create({ message: 'Item salvo com sucesso', duration: 3000, position: 'top' }).present();
     }).catch(() => {
-      this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'botton' }).present();
+      this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
     });
   }
 

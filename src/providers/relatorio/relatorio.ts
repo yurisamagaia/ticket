@@ -50,7 +50,11 @@ export class RelatorioProvider {
 
       return db.executeSql(sql, null).then((data: any) => {
         let item = data.rows.item(0);
-        return item.total;
+        if(item.total) {
+          return item.total;
+        } else {
+          return 0;
+        }
       }).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
   }
@@ -61,7 +65,11 @@ export class RelatorioProvider {
 
       return db.executeSql(sql, null).then((data: any) => {
         let item = data.rows.item(0);
-        return item.total;
+        if(item.total) {
+          return item.total;
+        } else {
+          return 0;
+        }
       }).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
   }

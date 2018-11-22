@@ -29,16 +29,26 @@ export class ImprimirProvider {
     });
   }
 
-  public relatorio(relatorio, configuracao, total, totalDinheiro, totalCartao) {
+  public relatorio(relatorio, configuracao, total, totalDinheiro, totalCartao, aberturaCaixa, tipo) {
     return new Promise(resolve => {
 
       let receipt = '';
       let dataNow = 'Data:'+this.datepipe.transform(new Date(), "dd/MM/yyyy");
       let horaNow = 'Hora:'+this.datepipe.transform(new Date(), "HH:mm:ss");
 
+      if(aberturaCaixa.data) {
+        var dataAbertura = aberturaCaixa.data.trim();
+        dataAbertura = dataAbertura.split(" ");
+        var novaDataAbertura = 'Data:'+dataAbertura[0]+' Hora:'+dataAbertura[1];
+      }
+
       this.estornarProvider.getTotal().then(totalEstornado => {
 
         receipt += commands.HARDWARE.HW_INIT;
+        receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
+        receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+        receipt += tipo;
+        receipt += commands.EOL;
         if(configuracao.evento) {
           receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
@@ -115,9 +125,19 @@ export class ImprimirProvider {
         receipt += commands.EOL;
         receipt += commands.TEXT_FORMAT.TXT_NORMAL;
         receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+        receipt += "Abertura";
+        receipt += commands.EOL;
+        receipt += novaDataAbertura;
+        receipt += commands.EOL;
+        receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+        receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
         receipt += "Impressao";
         receipt += commands.EOL;
         receipt += dataNow+' '+horaNow;
+        receipt += commands.EOL;
+        receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+        receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+        receipt += "Operador(a): "+configuracao.operador;
         receipt += commands.EOL;
         receipt += commands.EOL;
         receipt += commands.EOL;
