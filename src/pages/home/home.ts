@@ -159,8 +159,8 @@ export class HomePage {
           handler: data => {
             if(parseInt(data.senha) === senhaAcesso.senha_adm || parseInt(data.senha) === senhaAcesso.senha_root){
               this.relatorioProvider.relatorioTotal().then((result: any) => {
-                this.relatorioProvider.getSangria().then((sangria: any) => {
-                  var total = result.total - sangria.sangria;
+                this.configuracaoProvider.getSangria().then((sangria: any) => {
+                  var total = (sangria.troco + result.total) - sangria.sangria;
                   let alert = this.alertCtrl.create({
                     title: 'Valor disponível',
                     subTitle: 'R$ '+total.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
@@ -178,9 +178,20 @@ export class HomePage {
                         if(data.valor > 0) {
                           if(data.valor <= total) {
                             var total_sangria = parseFloat(data.valor) + parseFloat(sangria.sangria);
-                            this.relatorioProvider.updateSangria(total_sangria, this.model.id).then(() => {
-                              this.config();
-                              this.toast.create({ message: 'Sangria realizada com sucesso', duration: 3000, position: 'top' }).present();
+                            this.configuracaoProvider.updateSangria(total_sangria, this.model.id).then(() => {
+                              this.imprimirProvider.sangria(this.model, 'SANGRIA', data.valor, total_sangria).then((imprime) => {
+                                this.bluetoothSerial.write(imprime).then(() => {
+                                  this.config();
+                                  this.toast.create({ message: 'Sangria realizada com sucesso', duration: 3000, position: 'top' }).present();
+                                }, (error) => {
+                                  let alert = this.alertCtrl.create({
+                                    title: 'Erro',
+                                    message: error,
+                                    buttons: [{ text: 'Concluir' }]
+                                  });
+                                  alert.present();
+                                });
+                              });
                             });
                           } else {
                             this.toast.create({ message: 'O valor deve ser menor que o valor disponível', duration: 3000, position: 'top' }).present();
@@ -240,8 +251,19 @@ export class HomePage {
                       if(data.valor > 0) {
                         var total_troco = parseFloat(data.valor) + parseFloat(troco.troco);
                         this.configuracaoProvider.updateTroco(total_troco, this.model.id).then(() => {
-                          this.troco();
-                          this.toast.create({ message: 'Troco atualizado com sucesso', duration: 3000, position: 'top' }).present();
+                          this.imprimirProvider.sangria(this.model, 'TROCO', data.valor, total_troco).then((imprime) => {
+                            this.bluetoothSerial.write(imprime).then(() => {
+                              this.config();
+                              this.toast.create({ message: 'Troco realizado com sucesso', duration: 3000, position: 'top' }).present();
+                            }, (error) => {
+                              let alert = this.alertCtrl.create({
+                                title: 'Erro',
+                                message: error,
+                                buttons: [{ text: 'Concluir' }]
+                              });
+                              alert.present();
+                            });
+                          });
                         });
                       } else {
                         this.toast.create({ message: 'O valor não pode ser vazio', duration: 3000, position: 'top' }).present();

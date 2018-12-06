@@ -61,7 +61,7 @@ export class DatabaseProvider {
     db.executeSql('SELECT COUNT(id) as qtd FROM configuracao', <any>{}).then((data: any) => {
       if (data.rows.item(0).qtd === 0) {
         db.sqlBatch([
-          ['INSERT INTO configuracao (evento, impressao_ticket, segunda_via, placa, observacoes, operador, venda, estoque, estacionamento, totais, dinheiro, cartao, sangria, troco, senha_adm, senha_root) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ['', 0, 0, 0, '', '', 0, 0, 0, 1, 0, 0, 0, 123456, 2167]]
+          ['INSERT INTO configuracao (evento, impressao_ticket, segunda_via, placa, observacoes, operador, venda, estoque, estacionamento, dinheiro, cartao, sangria, troco, senha_adm, senha_root) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ['', 0, 0, 0, '', '', 0, 0, 0, 1, 0, 0, 0, 123456, 2167]]
         ]).then(() => console.log('Dados padrões incluídos')).catch(e => console.error('Erro ao incluir dados padrões', e));
       }
     }).catch(e => console.error('Erro ao consultar a qtd de categorias', e));

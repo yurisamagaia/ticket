@@ -73,29 +73,4 @@ export class RelatorioProvider {
       }).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
   }
-
-  public updateSangria(valor_sangria: number, id) {
-    return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'UPDATE configuracao SET sangria=? WHERE id = ?';
-      let data = [
-        valor_sangria,
-        id
-      ];
-      return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
-    }).catch((e) => console.log(JSON.stringify(e)));
-  }
-
-  public getSangria() {
-    return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'SELECT sangria FROM configuracao';
-
-      return db.executeSql(sql, null).then((data: any) => {
-        if (data.rows.length > 0) {
-          let item = data.rows.item(0);
-          return item;
-        }
-        return null;
-      }).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
-  }
 }

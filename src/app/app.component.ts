@@ -41,10 +41,10 @@ export class MyApp {
     this.initializeApp();
 
     this.pages = [
-      { title: 'Home', component: HomePage, icon: 'home', pass: false },
-      { title: 'Produtos', component: ProdutoPage, icon: 'cart', pass: true },
+      { title: 'INÍCIO', component: HomePage, icon: 'home', pass: false },
+      { title: 'PRODUTOS', component: ProdutoPage, icon: 'cart', pass: true },
       //{ title: 'Transportes', component: TransportePage, icon: 'car', pass: true },
-      { title: 'Configurações', component: ConfiguracaoPage, icon: 'settings', pass: true }
+      { title: 'CONFIGURAÇÕES', component: ConfiguracaoPage, icon: 'settings', pass: true }
     ];
   }
 
