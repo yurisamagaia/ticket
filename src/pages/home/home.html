@@ -53,30 +53,24 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <div padding>
-    <button ion-button block color="danger" type="button" (click)="sangria()">SANGRIA</button>
-    <button ion-button block color="dark" type="button" (click)="relatorio()">RELATÓRIO</button>
-    <button ion-button block color="primary" type="button" (click)="fecharCaixa()">FECHAR CAIXA</button>
-  </div>
-
-
-<!--
   <ion-grid>
     <ion-row>
-      <ion-col col-6 padding (click)="pedido('produto')">
-        <div style="border: 1px solid #f1f1f1" padding-top>
-          <ion-icon name="cart" style="zoom: 3.0"></ion-icon>
-          <h5>Venda</h5>
-        </div>
+      <ion-col>
+        <button ion-button block large color="dark" type="button" (click)="troco()">TROCO</button>
       </ion-col>
-      <ion-col col-6 padding (click)="pedido('transporte')">
-        <div style="border: 1px solid #f1f1f1" padding-top>
-          <ion-icon name="car" style="zoom: 3.0"></ion-icon>
-          <h5>Estacionamento</h5>
-        </div>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button block large color="danger" type="button" (click)="sangria()">SANGRIA</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button block large color="dark" type="button" (click)="relatorio()">RELATÓRIO</button>
+      </ion-col>
+      <ion-col>
+        <button ion-button block large color="primary" type="button" (click)="fecharCaixa()">FECHAR CAIXA</button>
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>-->
 </ion-content>

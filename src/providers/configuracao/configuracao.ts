@@ -9,7 +9,7 @@ export class ConfiguracaoProvider {
 
   public update(configuracao: Configuracao) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'UPDATE configuracao SET evento=?, impressao_ticket=?, segunda_via=?, placa=?, observacoes=?, operador=?, venda=?, estoque=?, estacionamento=?, totais=?, dinheiro=?, cartao=? WHERE id = ?';
+      let sql = 'UPDATE configuracao SET evento=?, impressao_ticket=?, segunda_via=?, placa=?, observacoes=?, operador=?, venda=?, estoque=?, estacionamento=?, dinheiro=?, cartao=? WHERE id = ?';
       let data = [
         configuracao.evento,
         configuracao.impressao_ticket ? 1 : 0,
@@ -20,7 +20,6 @@ export class ConfiguracaoProvider {
         configuracao.venda ? 1 : 0,
         configuracao.estoque ? 1 : 0,
         configuracao.estacionamento ? 1 : 0,
-        configuracao.totais ? 1 : 0,
         configuracao.dinheiro ? 1 : 0,
         configuracao.cartao ? 1 : 0,
         configuracao.id
@@ -40,7 +39,7 @@ export class ConfiguracaoProvider {
     }).catch((e) => console.log(JSON.stringify(e)));
   }
 
-  public updateTroco(configuracao: Configuracao) {
+  public updateTroco_(configuracao: Configuracao) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'UPDATE configuracao SET troco = ? WHERE id = ?';
       let data = [
@@ -49,6 +48,56 @@ export class ConfiguracaoProvider {
       ];
       return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
+  }
+
+  public getTroco() {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'SELECT troco FROM configuracao';
+
+      return db.executeSql(sql, null).then((data: any) => {
+        if (data.rows.length > 0) {
+          let item = data.rows.item(0);
+          return item;
+        }
+        return null;
+      }).catch((e) => console.error(e));
+    }).catch((e) => console.error(e));
+  }
+
+  public updateTroco(valor_troco: number, id) {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'UPDATE configuracao SET troco=? WHERE id = ?';
+      let data = [
+        valor_troco,
+        id
+      ];
+      return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
+  }
+
+  public updateSangria(valor_sangria: number, id) {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'UPDATE configuracao SET sangria=? WHERE id = ?';
+      let data = [
+        valor_sangria,
+        id
+      ];
+      return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
+    }).catch((e) => console.log(JSON.stringify(e)));
+  }
+
+  public getSangria() {
+    return this.dbProvider.getDB().then((db: SQLiteObject) => {
+      let sql = 'SELECT sangria FROM configuracao';
+
+      return db.executeSql(sql, null).then((data: any) => {
+        if (data.rows.length > 0) {
+          let item = data.rows.item(0);
+          return item;
+        }
+        return null;
+      }).catch((e) => console.error(e));
+    }).catch((e) => console.error(e));
   }
 
   public get() {
@@ -68,7 +117,6 @@ export class ConfiguracaoProvider {
           configuracao.venda = item.venda;
           configuracao.estoque = item.estoque;
           configuracao.estacionamento = item.estacionamento;
-          configuracao.totais = item.totais;
           configuracao.dinheiro = item.dinheiro;
           configuracao.cartao = item.cartao;
           configuracao.sangria = item.sangria;
@@ -108,7 +156,6 @@ export class Configuracao {
   venda: number;
   estoque: number;
   estacionamento: number;
-  totais: number;
   dinheiro: number;
   cartao: number;
   senha_adm: number;

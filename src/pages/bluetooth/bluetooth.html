@@ -13,15 +13,15 @@
 
 <ion-content padding>
   <ion-list>
-    <button ion-button block (click)="desconectar()" *ngIf="impressora">Desconectar</button>
+    <button ion-button block large (click)="desconectar()" *ngIf="impressora">Desconectar</button>
     <ion-list-header no-lines>
-      Dispositivos pareados
+      DISPOSITIVOS PAREADOS
     </ion-list-header>
     <ion-item *ngFor="let device of pareados" icon-end (color)="primary" (click)="selecionar(device.address)">
       {{device.name}}
       <ion-icon name="checkmark" *ngIf="device.address === impressora" item-end></ion-icon>
     </ion-item>
-    <button ion-button block margin-top (click)="listarNaoPareados()">Escanear impressoras</button>
+    <button ion-button block large margin-top (click)="listarNaoPareados()">Escanear impressoras</button>
     <ion-list-header no-lines *ngIf="naoPareados?.length > 0">
       Dispositivos disponíveis
     </ion-list-header>

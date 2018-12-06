@@ -1,11 +1,6 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Pedido</ion-title>
-    <ion-buttons end>
-      <button ion-button [disabled]="!total" (click)="finalizar('estornar')">
-        Estornar
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -15,16 +10,16 @@
       <ion-grid>
         <ion-row>
           <ion-col col-6>
-            <h2>{{ produto.nome }}</h2>
-            <p *ngIf="produto.ilimitado === 0">{{ produto.estoque }}un</p>
-            <p *ngIf="produto.ilimitado === 1">Ilmimitado</p>
-            <h2 class="valor">{{ produto.valor | currency:'BRL':true }}</h2>
+            <h1>{{ produto.nome }}</h1>
+            <h2 *ngIf="produto.ilimitado === 0">{{ produto.estoque }}un</h2>
+            <h2 *ngIf="produto.ilimitado === 1">Ilmimitado</h2>
+            <h1 class="valor">{{ produto.valor | currency:'BRL':true }}</h1>
           </ion-col>
           <ion-col col-6 text-right padding-top *ngIf="tipo === 'produto'">
             <div>
-              <ion-icon name="remove-circle" style="zoom: 2;" color="danger" (click)="removerQuantidade(i)"></ion-icon>
-              <span style="font-size: 20px; padding-left: 10px; padding-right: 10px;"> {{ produto.quantidade > 0 ? produto.quantidade : 0 }} </span>
-              <ion-icon name="add-circle" style="zoom: 2;" color="secondary" (click)="adicionarQuantidade(i)"></ion-icon>
+              <ion-icon name="remove-circle" style="zoom: 3;" color="danger" (click)="removerQuantidade(i)"></ion-icon>
+              <span class="quantidade-produto"> {{ produto.quantidade > 0 ? produto.quantidade : 0 }} </span>
+              <ion-icon name="add-circle" style="zoom: 3;" color="secondary" (click)="adicionarQuantidade(i)"></ion-icon>
             </div>
           </ion-col>
           <ion-col col-6 text-right padding-top *ngIf="tipo === 'transporte'" (click)="estacionamento(produto)">
@@ -39,14 +34,14 @@
   <ion-grid>
     <ion-row>
       <ion-col col-4 text-center>
-        <button ion-button color="dark" type="button" [disabled]="!total" (click)="limpar()">LIMPAR</button>
+        <button ion-button large color="dark" type="button" [disabled]="!total" (click)="limpar()">LIMPAR</button>
+      </ion-col>
+      <ion-col col-4 text-center class="fonte-total">
+        <div><b>Total</b></div>
+        <div> {{ total | currency:'BRL':true }} </div>
       </ion-col>
       <ion-col col-4 text-center>
-        <div> Total </div>
-        <div style="font-size: 20px"> {{ total | currency:'BRL':true }} </div>
-      </ion-col>
-      <ion-col col-4 text-center>
-        <button ion-button color="primary" type="button" [disabled]="!total" (click)="finalizar()">FINALIZAR</button>
+        <button ion-button large color="primary" type="button" [disabled]="!total" (click)="finalizar()">FINALIZAR</button>
       </ion-col>
     </ion-row>
   </ion-grid>

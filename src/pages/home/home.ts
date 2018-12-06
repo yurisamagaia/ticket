@@ -207,12 +207,59 @@ export class HomePage {
     });
   }
 
-  buscaTeste() {
-    this.pedidoProvider.getPedido().then((result: any[]) => {
-      console.log(JSON.stringify(result));
-    });
-    this.pedidoProvider.getItens().then((result: any[]) => {
-      console.log(JSON.stringify(result));
+  troco() {
+    this.configuracaoProvider.getSenha().then((senhaAcesso: any) => {
+      let alert = this.alertCtrl.create({
+        title: 'Senha de acesso',
+        inputs: [{
+          name: 'senha',
+          placeholder: 'Senha de acesso',
+          type: 'password'
+        }],
+        buttons: [{
+          text: 'Cancelar',
+          role: 'cancel'
+        },{
+          text: 'Confirmar',
+          handler: data => {
+            if(parseInt(data.senha) === senhaAcesso.senha_adm || parseInt(data.senha) === senhaAcesso.senha_root){
+              this.configuracaoProvider.getTroco().then((troco: any) => {
+                let alert = this.alertCtrl.create({
+                  title: 'Valor Troco',
+                  inputs: [{
+                    name: 'valor',
+                    placeholder: 'Valor Troco',
+                    type: 'number'
+                  }],
+                  buttons: [{
+                    text: 'Cancelar',
+                    role: 'cancel'
+                  },{
+                    text: 'Confirmar',
+                    handler: data => {
+                      if(data.valor > 0) {
+                        var total_troco = parseFloat(data.valor) + parseFloat(troco.troco);
+                        this.configuracaoProvider.updateTroco(total_troco, this.model.id).then(() => {
+                          this.troco();
+                          this.toast.create({ message: 'Troco atualizado com sucesso', duration: 3000, position: 'top' }).present();
+                        });
+                      } else {
+                        this.toast.create({ message: 'O valor não pode ser vazio', duration: 3000, position: 'top' }).present();
+                        this.troco();
+                      }
+                    }
+                  }]
+                });
+                alert.present();
+              })
+            }else{
+              this.toast.create({ message: 'Senha não confere', duration: 4000, position: 'bottom' }).present();
+              this.sangria();
+            }
+          }
+        }]
+      });
+      alert.present();
     });
   }
 

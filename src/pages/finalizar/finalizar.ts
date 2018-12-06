@@ -89,11 +89,6 @@ export class FinalizarPage {
     return this.pedidoProvider.insertPedido(this.total, this.formaPagamento);
   }
 
-  private salvarTroco() {
-    this.configuracao.troco += this.troco;
-    return this.configuracaoProvider.updateTroco(this.configuracao);
-  }
-
   config() {
     this.configuracao = new Configuracao();
     this.configuracaoProvider.get().then((result: any) => {
@@ -201,12 +196,10 @@ export class FinalizarPage {
             receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
             receipt += value.placa;
           }
-          if(this.configuracao.totais === 1){
-            receipt += commands.EOL;
-            receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-            receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-            receipt += "Valor: R$ "+(parseFloat(value.valor)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-          }
+          receipt += commands.EOL;
+          receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
+          receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+          receipt += "Valor: R$ "+(parseFloat(value.valor)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
           receipt += commands.EOL;
           receipt += commands.TEXT_FORMAT.TXT_NORMAL;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
@@ -261,13 +254,11 @@ export class FinalizarPage {
           receipt += commands.TEXT_FORMAT.TXT_4SQUARE;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
           receipt += value.quantidade+' '+value.nome+textQtd;
-          if(this.configuracao.totais === 1){
-            receipt += commands.EOL;
-            receipt += commands.EOL;
-            receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-            receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-            receipt += "Valor: R$ "+(parseFloat(value.valor)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-          }
+          receipt += commands.EOL;
+          receipt += commands.EOL;
+          receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+          receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+          receipt += "Valor: R$ "+(parseFloat(value.valor)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
           receipt += commands.EOL;
           receipt += commands.TEXT_FORMAT.TXT_NORMAL;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
@@ -301,13 +292,11 @@ export class FinalizarPage {
             receipt += commands.TEXT_FORMAT.TXT_4SQUARE;
             receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
             receipt += value.nome;
-            if(this.configuracao.totais === 1){
-              receipt += commands.EOL;
-              receipt += commands.EOL;
-              receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-              receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-              receipt += "Valor: R$ "+(parseFloat(value.valor)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            }
+            receipt += commands.EOL;
+            receipt += commands.EOL;
+            receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+            receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+            receipt += "Valor: R$ "+(parseFloat(value.valor)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
             receipt += commands.EOL;
             receipt += commands.TEXT_FORMAT.TXT_NORMAL;
             receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
@@ -329,47 +318,41 @@ export class FinalizarPage {
       }
     });
 
-    if(this.configuracao.totais === 1){
-      receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-      receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-      receipt += 'Forma de Pagamento: '+this.formaPagamento.toUpperCase();
-      receipt += commands.EOL;
-      receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-      receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-      receipt += 'Valor Total da Compra';
-      receipt += commands.EOL;
-      receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-      receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-      receipt += "R$ "+(parseFloat(this.total)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-      receipt += commands.EOL;
-      receipt += commands.EOL;
-      receipt += commands.EOL;
-    }
+    receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+    receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+    receipt += 'Forma de Pagamento: '+this.formaPagamento.toUpperCase();
+    receipt += commands.EOL;
+    receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
+    receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+    receipt += 'Valor Total da Compra';
+    receipt += commands.EOL;
+    receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
+    receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+    receipt += "R$ "+(parseFloat(this.total)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    receipt += commands.EOL;
+    receipt += commands.EOL;
+    receipt += commands.EOL;
 
     receipt = this.noSpecialChars(receipt);
 
-    this.salvarTroco().then(() => {
-      this.salvarPedido().then(data => {
-        this.salvarItem(data.insertId).then(() => {
-          this.bluetoothSerial.write(receipt).then(() => {
-            this.toast.create({ message: 'Pedido realizado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
-            this.viewCtrl.dismiss('finalizar');
-          }, (error) => {
-            let alert = this.alertCtrl.create({
-              title: 'Erro',
-              message: error,
-              buttons: [{ text: 'Concluir' }]
-            });
-            alert.present();
+    this.salvarPedido().then(data => {
+      this.salvarItem(data.insertId).then(() => {
+        this.bluetoothSerial.write(receipt).then(() => {
+          this.toast.create({ message: 'Pedido realizado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
+          this.viewCtrl.dismiss('finalizar');
+        }, (error) => {
+          let alert = this.alertCtrl.create({
+            title: 'Erro',
+            message: error,
+            buttons: [{ text: 'Concluir' }]
           });
-        }).catch(() => {
-          this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
+          alert.present();
         });
       }).catch(() => {
-        this.toast.create({ message: 'Erro ao salvar pedido', duration: 3000, position: 'top' }).present();
+        this.toast.create({ message: 'Erro ao salvar item', duration: 3000, position: 'top' }).present();
       });
     }).catch(() => {
-      this.toast.create({ message: 'Erro ao salvar troco', duration: 3000, position: 'top' }).present();
+      this.toast.create({ message: 'Erro ao salvar pedido', duration: 3000, position: 'top' }).present();
     });
   }
 
