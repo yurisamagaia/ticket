@@ -11,18 +11,21 @@ export class ImprimirProvider {
     private estornarProvider: EstornarProvider
   ) { }
 
-  public relatorio(relatorio, configuracao, total, totalDinheiro, totalCartao, aberturaCaixa, tipo) {
+  public relatorio(relatorio, configuracao, total, totalDinheiro, totalCartao, aberturaCaixa = null, tipo) {
     return new Promise(resolve => {
 
       let receipt = '';
       let dataNow = 'Data:'+this.datepipe.transform(new Date(), "dd/MM/yyyy");
       let horaNow = 'Hora:'+this.datepipe.transform(new Date(), "HH:mm:ss");
 
-      if(aberturaCaixa.data) {
+      if(aberturaCaixa) {
         var dataAbertura = aberturaCaixa.data.trim();
         dataAbertura = dataAbertura.split(" ");
         var novaDataAbertura = 'Data:'+dataAbertura[0]+' Hora:'+dataAbertura[1];
       }
+
+      var saldo_total = parseFloat(total)+parseFloat(configuracao.troco);
+      saldo_total -= parseFloat(configuracao.sangria);
 
       this.estornarProvider.getTotal().then(totalEstornado => {
 
@@ -51,7 +54,7 @@ export class ImprimirProvider {
           receipt += commands.EOL;
           receipt += commands.TEXT_FORMAT.TXT_NORMAL;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-          receipt += 'Quantidade: '+value.quantidade;
+          receipt += 'Quantidade: '+value.total_quantidade;
           receipt += commands.EOL;
           receipt += commands.TEXT_FORMAT.TXT_NORMAL;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
@@ -79,7 +82,7 @@ export class ImprimirProvider {
         receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
         receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
         receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
-        receipt += 'TOTAL: R$ '+(parseFloat(total.total)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        receipt += 'TOTAL: R$ '+(parseFloat(total)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         receipt += commands.EOL;
         receipt += commands.EOL;
         receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
@@ -89,7 +92,7 @@ export class ImprimirProvider {
         receipt += commands.EOL;
         receipt += commands.TEXT_FORMAT.TXT_NORMAL;
         receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
-        receipt += 'TOTAL (+): R$ '+(parseFloat(total.total)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        receipt += 'TOTAL (+): R$ '+(parseFloat(total)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         receipt += commands.EOL;
         receipt += commands.TEXT_FORMAT.TXT_NORMAL;
         receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
@@ -102,8 +105,8 @@ export class ImprimirProvider {
         receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
         receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
         receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
-        receipt += 'SALDO: R$ '+(parseFloat(total.total)-parseFloat(configuracao.sangria)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-        if(aberturaCaixa.data) {
+        receipt += 'SALDO: R$ '+(saldo_total).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        if(aberturaCaixa) {
           receipt += commands.EOL;
           receipt += commands.EOL;
           receipt += commands.TEXT_FORMAT.TXT_NORMAL;
@@ -118,6 +121,7 @@ export class ImprimirProvider {
           receipt += commands.EOL;
           receipt += dataNow+' '+horaNow;
         } else {
+          receipt += commands.EOL;
           receipt += commands.EOL;
           receipt += commands.TEXT_FORMAT.TXT_NORMAL;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
@@ -140,113 +144,52 @@ export class ImprimirProvider {
     });
   }
 
-  public sangria(configuracao, tipo, valor_sangria, total_sangria) {
+  public imprimeSangriaTroco(configuracao, tipo, valor) {
     return new Promise(resolve => {
 
       let receipt = '';
       let dataNow = 'Data:'+this.datepipe.transform(new Date(), "dd/MM/yyyy");
       let horaNow = 'Hora:'+this.datepipe.transform(new Date(), "HH:mm:ss");
 
-      this.estornarProvider.getTotal().then(totalEstornado => {
-
-        receipt += commands.HARDWARE.HW_INIT;
-        //receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-        //receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        //receipt += tipo;
-        //receipt += commands.EOL;
-        if(configuracao.evento) {
-          receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-          receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-          receipt += configuracao.evento;
-          receipt += commands.EOL;
-          receipt += commands.EOL;
-        }
+      receipt += commands.HARDWARE.HW_INIT;
+      if(configuracao.evento) {
         receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
         receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        receipt += tipo;
-
+        receipt += configuracao.evento;
         receipt += commands.EOL;
-        receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
-        receipt += 'VALOR SANGRIA: R$ '+(parseFloat(valor_sangria)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         receipt += commands.EOL;
-        receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
-        receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
-        receipt += 'TOTAL SANGRIA: R$ '+(parseFloat(total_sangria)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      }
+      receipt += commands.TEXT_FORMAT.TXT_4SQUARE;
+      receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+      receipt += tipo;
+      receipt += commands.EOL;
+      receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
+      receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+      receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
+      receipt += 'Valor: R$ '+(parseFloat(valor)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      if(tipo === 'Sangria') {
         receipt += commands.EOL;
-        receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        receipt += "Impressao";
-        receipt += commands.EOL;
-        receipt += dataNow+' '+horaNow;
         receipt += commands.EOL;
         receipt += commands.TEXT_FORMAT.TXT_NORMAL;
         receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        receipt += "Operador(a): "+configuracao.operador;
-        receipt += commands.EOL;
-        receipt += commands.EOL;
-        receipt += commands.EOL;
+        receipt += 'Ass.: __________________________';
+      }
+      receipt += commands.EOL;
+      receipt += commands.EOL;
+      receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+      receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+      receipt += dataNow+' '+horaNow;
+      receipt += commands.EOL;
+      receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+      receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+      receipt += "Operador(a): "+configuracao.operador;
+      receipt += commands.EOL;
+      receipt += commands.EOL;
+      receipt += commands.EOL;
 
-        receipt = this.noSpecialChars(receipt);
+      receipt = this.noSpecialChars(receipt);
 
-        resolve(receipt)
-      })
-    });
-  }
-
-  public troco(configuracao, tipo, valor_troco, total_troco) {
-    return new Promise(resolve => {
-
-      let receipt = '';
-      let dataNow = 'Data:'+this.datepipe.transform(new Date(), "dd/MM/yyyy");
-      let horaNow = 'Hora:'+this.datepipe.transform(new Date(), "HH:mm:ss");
-
-      this.estornarProvider.getTotal().then(totalEstornado => {
-
-        receipt += commands.HARDWARE.HW_INIT;
-        //receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-        //receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        //receipt += tipo;
-        //receipt += commands.EOL;
-        if(configuracao.evento) {
-          receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-          receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-          receipt += configuracao.evento;
-          receipt += commands.EOL;
-          receipt += commands.EOL;
-        }
-        receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        receipt += tipo;
-
-        receipt += commands.EOL;
-        receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
-        receipt += 'VALOR TROCO: R$ '+(parseFloat(valor_troco)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-        receipt += commands.EOL;
-        receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_RT;
-        receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
-        receipt += 'TOTAL TROCO: R$ '+(parseFloat(total_troco)).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-        receipt += commands.EOL;
-        receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        receipt += "Impressao";
-        receipt += commands.EOL;
-        receipt += dataNow+' '+horaNow;
-        receipt += commands.EOL;
-        receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-        receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-        receipt += "Operador(a): "+configuracao.operador;
-        receipt += commands.EOL;
-        receipt += commands.EOL;
-        receipt += commands.EOL;
-
-        receipt = this.noSpecialChars(receipt);
-
-        resolve(receipt)
-      })
+      resolve(receipt)
     });
   }
 

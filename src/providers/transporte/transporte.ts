@@ -10,7 +10,7 @@ export class TransporteProvider {
   public insert(transporte: Transporte) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'INSERT INTO transporte (nome, valor, ativo) VALUES (?, ?, ?)';
-      let data = [transporte.nome, transporte.valor, transporte.ativo ? 1 : 0];
+      let data = [transporte.nome.toUpperCase(), transporte.valor, transporte.ativo ? 1 : 0];
       return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
     }).catch((e) => console.error(JSON.stringify(e)));
   }
@@ -18,7 +18,7 @@ export class TransporteProvider {
   public update(transporte: Transporte) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'UPDATE transporte SET nome = ?, valor = ?, ativo = ? where id = ?';
-      let data = [transporte.nome, transporte.valor, transporte.ativo ? 1 : 0, transporte.id];
+      let data = [transporte.nome.toUpperCase(), transporte.valor, transporte.ativo ? 1 : 0, transporte.id];
       return db.executeSql(sql, data).catch((e) => console.error(JSON.stringify(e)));
     }).catch((e) => console.error(JSON.stringify(e)));
   }

@@ -10,7 +10,7 @@ export class ProdutoProvider {
   public insert(produto: Produto) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'INSERT INTO produto (nome, tipo, valor, estoque, ilimitado, ordem, ativo) VALUES (?, ?, ?, ?, ?, ?, ?)';
-      let data = [produto.nome, produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, 0, produto.ativo ? 1 : 0];
+      let data = [this.noSpecialChars(produto.nome.toUpperCase()), produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, 0, produto.ativo ? 1 : 0];
       return db.executeSql(sql, data).catch((e) => console.error(e));
     }).catch((e) => console.error(e));
   }
@@ -18,7 +18,7 @@ export class ProdutoProvider {
   public update(produto: Produto) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'UPDATE produto SET nome = ?, tipo = ?, valor = ?, estoque = ?, ilimitado = ?, ordem = ?, ativo = ? where id = ?';
-      let data = [produto.nome, produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, produto.ordem, produto.ativo ? 1 : 0, produto.id];
+      let data = [this.noSpecialChars(produto.nome.toUpperCase()), produto.tipo, produto.valor, produto.estoque, produto.ilimitado ? 1 : 0, produto.ordem, produto.ativo ? 1 : 0, produto.id];
       return db.executeSql(sql, data).catch((e) => console.error(e));
     }).catch((e) => console.error(e));
   }
@@ -74,7 +74,7 @@ export class ProdutoProvider {
         sql += ' AND ativo = ? ';
         data.push(1);
       }
-      sql += ' ORDER BY ordem';
+      sql += ' ORDER BY nome ASC';
 
       return db.executeSql(sql, data).then((data: any) => {
         if (data.rows.length > 0) {
@@ -108,6 +108,79 @@ export class ProdutoProvider {
         }
       }).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
+  }
+
+  public noSpecialChars(string) {
+    var translate = {
+        "à": "a",
+        "á": "a",
+        "â": "a",
+        "ã": "a",
+        "ä": "a",
+        "å": "a",
+        "æ": "a",
+        "ç": "c",
+        "è": "e",
+        "é": "e",
+        "ê": "e",
+        "ë": "e",
+        "ì": "i",
+        "í": "i",
+        "î": "i",
+        "ï": "i",
+        "ð": "d",
+        "ñ": "n",
+        "ò": "o",
+        "ó": "o",
+        "ô": "o",
+        "õ": "o",
+        "ö": "o",
+        "ø": "o",
+        "ù": "u",
+        "ú": "u",
+        "û": "u",
+        "ü": "u",
+        "ý": "y",
+        "þ": "b",
+        "ÿ": "y",
+        "ŕ": "r",
+        "À": "A",
+        "Á": "A",
+        "Â": "A",
+        "Ã": "A",
+        "Ä": "A",
+        "Å": "A",
+        "Æ": "A",
+        "Ç": "C",
+        "È": "E",
+        "É": "E",
+        "Ê": "E",
+        "Ë": "E",
+        "Ì": "I",
+        "Í": "I",
+        "Î": "I",
+        "Ï": "I",
+        "Ð": "D",
+        "Ñ": "N",
+        "Ò": "O",
+        "Ó": "O",
+        "Ô": "O",
+        "Õ": "O",
+        "Ö": "O",
+        "Ø": "O",
+        "Ù": "U",
+        "Ú": "U",
+        "Û": "U",
+        "Ü": "U",
+        "Ý": "Y",
+        "Þ": "B",
+        "Ÿ": "Y",
+        "Ŕ": "R"
+      },
+      translate_re = /[àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŕŕÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÝÝÞŸŔŔ]/gim;
+    return (string.replace(translate_re, function (match) {
+      return translate[match];
+    }));
   }
 }
 

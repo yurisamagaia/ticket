@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Usuários</ion-title>
+  </ion-navbar>
+  <ion-searchbar (ionInput)="filtrar($event)" [(ngModel)]="textoBuscar" placeholder="Buscar"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-sliding *ngFor="let usuario of usuarios" >
+      <button ion-item (click)="editar(usuario.id)" [ngClass]="(usuario.ativo === 1) ? 'habilitado' : 'desabilitado'">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <h2>{{ usuario.nome }}</h2>
+              <p *ngIf="usuario.ilimitado === 1">Quantidade ilimitada</p>
+              <p *ngIf="usuario.ilimitado === 0">{{ usuario.estoque }}un</p>
+            </ion-col>
+            <ion-col col-6 text-right>
+              <h2 class="valor">{{ usuario.valor | currency:'BRL':true }}</h2>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </button>
+      <ion-item-options side="left" (ionSwipe)="ativar(item, usuario)"></ion-item-options>
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="remover(usuario)">
+          <ion-icon name="trash"></ion-icon>
+          Excluir
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+<ion-footer style="background-color: #F2F2F2;">
+  <div padding>
+    <button ion-button block large icon-left color="secondary" type="button" (click)="adicionar()"><ion-icon name="add"></ion-icon> ADICIONAR</button>
+  </div>
+</ion-footer>

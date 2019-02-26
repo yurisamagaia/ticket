@@ -11,12 +11,12 @@ export class ConfiguracaoProvider {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'UPDATE configuracao SET evento=?, impressao_ticket=?, segunda_via=?, placa=?, observacoes=?, operador=?, venda=?, estoque=?, estacionamento=?, dinheiro=?, cartao=? WHERE id = ?';
       let data = [
-        configuracao.evento,
+        configuracao.evento.toUpperCase(),
         configuracao.impressao_ticket ? 1 : 0,
         configuracao.segunda_via ? 1 : 0,
         configuracao.placa ? 1 : 0,
-        configuracao.observacoes,
-        configuracao.operador,
+        configuracao.observacoes.toUpperCase(),
+        configuracao.operador.toUpperCase(),
         configuracao.venda ? 1 : 0,
         configuracao.estoque ? 1 : 0,
         configuracao.estacionamento ? 1 : 0,
@@ -50,20 +50,6 @@ export class ConfiguracaoProvider {
     }).catch((e) => console.log(JSON.stringify(e)));
   }
 
-  public getTroco() {
-    return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'SELECT troco FROM configuracao';
-
-      return db.executeSql(sql, null).then((data: any) => {
-        if (data.rows.length > 0) {
-          let item = data.rows.item(0);
-          return item;
-        }
-        return null;
-      }).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
-  }
-
   public updateTroco(valor_troco: number, id) {
     return this.dbProvider.getDB().then((db: SQLiteObject) => {
       let sql = 'UPDATE configuracao SET troco=? WHERE id = ?';
@@ -84,20 +70,6 @@ export class ConfiguracaoProvider {
       ];
       return db.executeSql(sql, data).catch((e) => console.log(JSON.stringify(e)));
     }).catch((e) => console.log(JSON.stringify(e)));
-  }
-
-  public getSangria() {
-    return this.dbProvider.getDB().then((db: SQLiteObject) => {
-      let sql = 'SELECT sangria FROM configuracao';
-
-      return db.executeSql(sql, null).then((data: any) => {
-        if (data.rows.length > 0) {
-          let item = data.rows.item(0);
-          return item;
-        }
-        return null;
-      }).catch((e) => console.error(e));
-    }).catch((e) => console.error(e));
   }
 
   public get() {

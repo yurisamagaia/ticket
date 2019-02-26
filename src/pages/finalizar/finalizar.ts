@@ -2,12 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, AlertController, ToastController, ModalController } from 'ionic-angular';
 import { DatePipe } from '@angular/common';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
-import { HomePage } from '../../pages/home/home';
 import { BluetoothPage } from '../../pages/bluetooth/bluetooth';
 import { PedidoProvider } from '../../providers/pedido/pedido';
 import { ConfiguracaoProvider, Configuracao } from '../../providers/configuracao/configuracao';
 import { EstornarProvider } from '../../providers/estornar/estornar';
-import { ImprimirProvider } from '../../providers/imprimir/imprimir';
 import { commands } from '../../providers/command/command';
 
 @IonicPage()
@@ -36,8 +34,7 @@ export class FinalizarPage {
     private bluetoothSerial: BluetoothSerial,
     public modalCtrl: ModalController,
     private datepipe: DatePipe,
-    private estornarProvider: EstornarProvider,
-    private imprimirProvider: ImprimirProvider
+    private estornarProvider: EstornarProvider
   ) {
     this.produtos = navParams.get('itens');
     this.total = navParams.get('total');
@@ -209,18 +206,6 @@ export class FinalizarPage {
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
           receipt += commands.LINE_SPACING.LS_DEFAULT;
           receipt += dataNow+' '+horaNow;
-          if(this.configuracao.observacoes) {
-            receipt += commands.EOL;
-            receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-            receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-            receipt += commands.TEXT_FORMAT.TXT_UNDERL_ON;
-            receipt += "IMPORTANTE";
-            receipt += commands.EOL;
-            receipt += commands.TEXT_FORMAT.TXT_NORMAL;
-            receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
-            receipt += commands.TEXT_FORMAT.TXT_UNDERL_ON;
-            receipt += this.configuracao.observacoes;
-          }
           if(this.configuracao.operador) {
             receipt += commands.EOL;
             receipt += commands.TEXT_FORMAT.TXT_NORMAL;
@@ -244,6 +229,7 @@ export class FinalizarPage {
           receipt += commands.HARDWARE.HW_INIT;
           receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
           receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+          receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
           receipt += this.configuracao.evento;
           receipt += commands.EOL;
           receipt += commands.EOL;
@@ -270,6 +256,17 @@ export class FinalizarPage {
             receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
             receipt += "Operador(a): "+this.configuracao.operador;
           }
+          if(this.configuracao.observacoes) {
+            receipt += commands.EOL;
+            receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+            receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+            receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
+            receipt += "Observacoes";
+            receipt += commands.EOL;
+            receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+            receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+            receipt += this.configuracao.observacoes;
+          }
           receipt += commands.EOL;
           receipt += commands.EOL;
           receipt += commands.HORIZONTAL_LINE.HR4_58MM;
@@ -282,6 +279,7 @@ export class FinalizarPage {
             receipt += commands.HARDWARE.HW_INIT;
             receipt += commands.TEXT_FORMAT.TXT_2HEIGHT;
             receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+            receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
             receipt += this.configuracao.evento;
             receipt += commands.EOL;
             receipt += commands.EOL;
@@ -307,6 +305,17 @@ export class FinalizarPage {
               receipt += commands.TEXT_FORMAT.TXT_NORMAL;
               receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
               receipt += "Operador(a): "+this.configuracao.operador;
+            }
+            if(this.configuracao.observacoes) {
+              receipt += commands.EOL;
+              receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+              receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+              receipt += commands.TEXT_FORMAT.TXT_BOLD_ON;
+              receipt += "Observacoes";
+              receipt += commands.EOL;
+              receipt += commands.TEXT_FORMAT.TXT_NORMAL;
+              receipt += commands.TEXT_FORMAT.TXT_ALIGN_CT;
+              receipt += this.configuracao.observacoes;
             }
             receipt += commands.EOL;
             receipt += commands.EOL;

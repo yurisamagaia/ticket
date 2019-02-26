@@ -29,7 +29,6 @@ export class DatabaseProvider {
   public clearDatabase() {
     return this.getDB().then((db: SQLiteObject) => {
       this.clearTables(db);
-      this.insertDefaultItems(db);
       return true;
     }).catch(e => {
       console.log(JSON.stringify(e));
@@ -49,6 +48,7 @@ export class DatabaseProvider {
       ['CREATE TABLE IF NOT EXISTS estornar (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, id_produto integer, nome TEXT, quantidade integer, valor REAL, FOREIGN KEY(id_produto) REFERENCES produto(id))'],
 
       ['CREATE TABLE IF NOT EXISTS produto (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, tipo TEXT, valor REAL, estoque integer, ilimitado integer, ordem integer, ativo integer)'],
+      //['CREATE TABLE IF NOT EXISTS usuario (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nome TEXT, senha TEXT, ativo integer)'],
       ['CREATE TABLE IF NOT EXISTS configuracao (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, evento TEXT, impressao_ticket integer, segunda_via integer, placa integer, observacoes TEXT, operador TEXT, venda integer, estoque integer, estacionamento integer, dinheiro integer, cartao integer, sangria REAL, troco REAL, senha_adm integer, senha_root integer)']
     ]).then(() => console.log('Tabelas criadas')).catch(e => console.error('Erro ao criar as tabelas', console.log(JSON.stringify(e))));
   }
@@ -71,7 +71,8 @@ export class DatabaseProvider {
     db.sqlBatch([
       ['DELETE FROM pedido'],
       ['DELETE FROM pedido_item'],
-      ['DELETE FROM estornar']
+      ['DELETE FROM estornar'],
+      ['UPDATE configuracao SET sangria = 0, troco = 0']
     ]).then(() => console.log('Tabelas criadas')).catch(e => console.error('Erro ao criar as tabelas', console.log(JSON.stringify(e))));
   }
 }

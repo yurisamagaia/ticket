@@ -35,11 +35,12 @@ export class RelatorioProvider {
       let sql = 'SELECT SUM(total) AS total FROM pedido';
 
       return db.executeSql(sql, null).then((data: any) => {
-        if (data.rows.length > 0) {
-          let item = data.rows.item(0);
-          return item;
+        let item = data.rows.item(0);
+        if(item.total) {
+          return item.total;
+        } else {
+          return 0;
         }
-        return null;
       }).catch((e) => console.error(e));
     }).catch((e) => console.error(e));
   }

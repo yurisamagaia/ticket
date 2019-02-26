@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, AlertController } from 'ionic-angular';
 import { ProdutoProvider } from '../../providers/produto/produto';
-import { Storage } from '@ionic/storage';
 import { FinalizarPage } from '../../pages/finalizar/finalizar';
 import { ModalPlacaPage } from '../../pages/modal-placa/modal-placa';
 import { HomePage } from '../../pages/home/home';
@@ -22,7 +21,6 @@ export class EstornarPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private produtoProvider: ProdutoProvider,
-    private storage: Storage,
     private toast: ToastController,
     public modalCtrl: ModalController,
     private alertCtrl: AlertController

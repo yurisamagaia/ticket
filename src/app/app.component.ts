@@ -8,12 +8,10 @@ import { DatabaseProvider } from '../providers/database/database';
 import { ConfiguracaoProvider, Configuracao } from '../providers/configuracao/configuracao';
 import { HomePage } from '../pages/home/home';
 import { ProdutoPage } from '../pages/produto/produto';
+import { UsuarioPage } from '../pages/usuario/usuario';
 //import { TransportePage } from '../pages/transporte/transporte';
 import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
 import { BluetoothPage } from '../pages/bluetooth/bluetooth';
-import { Storage } from '@ionic/storage';
-
-import { commands } from '../providers/command/command';
 
 @Component({
   templateUrl: 'app.html'
@@ -35,14 +33,14 @@ export class MyApp {
     private toastCtrl: ToastController,
     private configuracaoProvider: ConfiguracaoProvider,
     private bluetoothSerial: BluetoothSerial,
-    public modalCtrl: ModalController,
-    private storage: Storage
+    public modalCtrl: ModalController
   ) {
     this.initializeApp();
 
     this.pages = [
       { title: 'INÍCIO', component: HomePage, icon: 'home', pass: false },
       { title: 'PRODUTOS', component: ProdutoPage, icon: 'cart', pass: true },
+      //{ title: 'USUÁRIOS', component: UsuarioPage, icon: 'user', pass: true },
       //{ title: 'Transportes', component: TransportePage, icon: 'car', pass: true },
       { title: 'CONFIGURAÇÕES', component: ConfiguracaoPage, icon: 'settings', pass: true }
     ];

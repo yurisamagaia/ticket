@@ -8,7 +8,6 @@ import { BluetoothPage } from '../../pages/bluetooth/bluetooth';
 
 import { ConfiguracaoProvider, Configuracao } from '../../providers/configuracao/configuracao';
 import { PedidoProvider } from '../../providers/pedido/pedido';
-import { EstornarProvider } from '../../providers/estornar/estornar';
 import { RelatorioProvider } from '../../providers/relatorio/relatorio';
 import { ImprimirProvider } from '../../providers/imprimir/imprimir';
 import { DatabaseProvider } from '../../providers/database/database';
@@ -26,7 +25,6 @@ export class HomePage {
     private configuracaoProvider: ConfiguracaoProvider,
     public modalCtrl: ModalController,
     private pedidoProvider: PedidoProvider,
-    private estornarProvider: EstornarProvider,
     private relatorioProvider: RelatorioProvider,
     private databaseProvider: DatabaseProvider,
     private imprimirProvider: ImprimirProvider,
@@ -54,33 +52,35 @@ export class HomePage {
           text: 'Confirmar',
           handler: data => {
             if(parseInt(data.senha) === senhaAcesso.senha_adm || parseInt(data.senha) === senhaAcesso.senha_root){
-              this.databaseProvider.clearDatabase().then(returnClear => {
-                if(returnClear === true) {
-                  this.pedidoProvider.getAbertura().then((aberturaCaixa: any) => {
-                    this.relatorioProvider.relatorio().then((result: any[]) => {
-                      this.relatorioProvider.relatorioTotal().then((total) => {
-                        this.relatorioProvider.relatorioTotalDinheiro().then((totalDinheiro) => {
-                          this.relatorioProvider.relatorioTotalCartao().then((totalCartao) => {
-                            this.imprimirProvider.relatorio(result, this.model, total, totalDinheiro, totalCartao, aberturaCaixa, 'FECHAMENTO DE CAIXA').then((imprime) => {
-                              this.bluetoothSerial.write(imprime).then(() => {
-                                this.toast.create({ message: 'Caixa fechado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
-                              }, (error) => {
-                                let alert = this.alertCtrl.create({
-                                  title: 'Erro',
-                                  message: error,
-                                  buttons: [{ text: 'Concluir' }]
-                                });
-                                alert.present();
+              this.configuracaoProvider.get().then((configuracoes: any) => {
+                this.pedidoProvider.getAbertura().then((aberturaCaixa: any) => {
+                  this.relatorioProvider.relatorio().then((result: any[]) => {
+                    this.relatorioProvider.relatorioTotal().then((total) => {
+                      this.relatorioProvider.relatorioTotalDinheiro().then((totalDinheiro) => {
+                        this.relatorioProvider.relatorioTotalCartao().then((totalCartao) => {
+                          this.imprimirProvider.relatorio(result, configuracoes, total, totalDinheiro, totalCartao, aberturaCaixa, 'FECHAMENTO DE CAIXA').then((imprime) => {
+                            this.bluetoothSerial.write(imprime).then(() => {
+                              this.databaseProvider.clearDatabase().then(returnClear => {
+                                if(returnClear === true) {
+                                  this.toast.create({ message: 'Caixa fechado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
+                                } else {
+                                  this.toast.create({ message: 'Erro ao fechar caixa', duration: 4000, position: 'bottom' }).present();
+                                }
                               });
+                            }, (error) => {
+                              let alert = this.alertCtrl.create({
+                                title: 'Erro',
+                                message: error,
+                                buttons: [{ text: 'Concluir' }]
+                              });
+                              alert.present();
                             });
                           });
                         });
                       });
                     });
                   });
-                } else {
-                  this.toast.create({ message: 'Erro ao fechar caixa', duration: 4000, position: 'bottom' }).present();
-                }
+                });
               });
             }else{
               this.toast.create({ message: 'Senha não confere', duration: 4000, position: 'bottom' }).present();
@@ -109,12 +109,12 @@ export class HomePage {
           text: 'Confirmar',
           handler: data => {
             if(parseInt(data.senha) === senhaAcesso.senha_adm || parseInt(data.senha) === senhaAcesso.senha_root){
-              this.pedidoProvider.getAbertura().then((aberturaCaixa: any) => {
+              this.configuracaoProvider.get().then((configuracoes: any) => {
                 this.relatorioProvider.relatorio().then((result: any[]) => {
                   this.relatorioProvider.relatorioTotal().then((total) => {
                     this.relatorioProvider.relatorioTotalDinheiro().then((totalDinheiro) => {
                       this.relatorioProvider.relatorioTotalCartao().then((totalCartao) => {
-                        this.imprimirProvider.relatorio(result, this.model, total, totalDinheiro, totalCartao, aberturaCaixa, 'RELATORIO DE MOVIMENTACAO').then((imprime) => {
+                        this.imprimirProvider.relatorio(result, configuracoes, total, totalDinheiro, totalCartao, null, 'RELATORIO DE MOVIMENTACAO').then((imprime) => {
                           this.bluetoothSerial.write(imprime).then(() => {
                             this.toast.create({ message: 'Relatório realizado com sucesso, aguarde a impressão do ticket', duration: 4000, position: 'bottom' }).present();
                           }, (error) => {
@@ -158,9 +158,9 @@ export class HomePage {
           text: 'Confirmar',
           handler: data => {
             if(parseInt(data.senha) === senhaAcesso.senha_adm || parseInt(data.senha) === senhaAcesso.senha_root){
-              this.relatorioProvider.relatorioTotal().then((result: any) => {
-                this.configuracaoProvider.getSangria().then((sangria: any) => {
-                  var total = (sangria.troco + result.total) - sangria.sangria;
+              this.configuracaoProvider.get().then((configuracoes: any) => {
+                this.relatorioProvider.relatorioTotal().then((resultTotal: any) => {
+                  var total = (configuracoes.troco + resultTotal) - configuracoes.sangria;
                   let alert = this.alertCtrl.create({
                     title: 'Valor disponível',
                     subTitle: 'R$ '+total.toLocaleString('pt-BR', { minimumFractionDigits: 2 }),
@@ -177,9 +177,9 @@ export class HomePage {
                       handler: data => {
                         if(data.valor > 0) {
                           if(data.valor <= total) {
-                            var total_sangria = parseFloat(data.valor) + parseFloat(sangria.sangria);
-                            this.configuracaoProvider.updateSangria(total_sangria, this.model.id).then(() => {
-                              this.imprimirProvider.sangria(this.model, 'SANGRIA', data.valor, total_sangria).then((imprime) => {
+                            var total_sangria = parseFloat(data.valor) + parseFloat(configuracoes.sangria);
+                            this.configuracaoProvider.updateSangria(total_sangria, configuracoes.id).then(() => {
+                              this.imprimirProvider.imprimeSangriaTroco(configuracoes, 'Sangria', data.valor).then((imprime) => {
                                 this.bluetoothSerial.write(imprime).then(() => {
                                   this.config();
                                   this.toast.create({ message: 'Sangria realizada com sucesso', duration: 3000, position: 'top' }).present();
@@ -234,7 +234,7 @@ export class HomePage {
           text: 'Confirmar',
           handler: data => {
             if(parseInt(data.senha) === senhaAcesso.senha_adm || parseInt(data.senha) === senhaAcesso.senha_root){
-              this.configuracaoProvider.getTroco().then((troco: any) => {
+              this.configuracaoProvider.get().then((configuracoes: any) => {
                 let alert = this.alertCtrl.create({
                   title: 'Valor Troco',
                   inputs: [{
@@ -249,9 +249,9 @@ export class HomePage {
                     text: 'Confirmar',
                     handler: data => {
                       if(data.valor > 0) {
-                        var total_troco = parseFloat(data.valor) + parseFloat(troco.troco);
+                        var total_troco = parseFloat(data.valor) + parseFloat(configuracoes.troco);
                         this.configuracaoProvider.updateTroco(total_troco, this.model.id).then(() => {
-                          this.imprimirProvider.sangria(this.model, 'TROCO', data.valor, total_troco).then((imprime) => {
+                          this.imprimirProvider.imprimeSangriaTroco(configuracoes, 'Troco', data.valor).then((imprime) => {
                             this.bluetoothSerial.write(imprime).then(() => {
                               this.config();
                               this.toast.create({ message: 'Troco realizado com sucesso', duration: 3000, position: 'top' }).present();

@@ -16,6 +16,8 @@ import { BluetoothPage } from '../pages/bluetooth/bluetooth';
 import { FinalizarPage } from '../pages/finalizar/finalizar';
 import { ModalPlacaPage } from '../pages/modal-placa/modal-placa';
 import { EstornarPage } from '../pages/estornar/estornar';
+import { UsuarioPage } from '../pages/usuario/usuario';
+import { UsuarioEditarPage } from '../pages/usuario-editar/usuario-editar';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,12 +31,12 @@ import { ProdutoProvider } from '../providers/produto/produto';
 import { ConfiguracaoProvider } from '../providers/configuracao/configuracao';
 import { TransporteProvider } from '../providers/transporte/transporte';
 import { PedidoProvider } from '../providers/pedido/pedido';
-import { CommandProvider } from '../providers/command/command';
-
-import { MaskInput } from 'mask-ioni-3/mask-input';
 import { EstornarProvider } from '../providers/estornar/estornar';
 import { RelatorioProvider } from '../providers/relatorio/relatorio';
 import { ImprimirProvider } from '../providers/imprimir/imprimir';
+import { UsuarioProvider } from '../providers/usuario/usuario';
+
+import { MaskInput } from 'mask-ioni-3/mask-input';
 
 registerLocaleData(ptBr);
 
@@ -52,7 +54,9 @@ registerLocaleData(ptBr);
     BluetoothPage,
     FinalizarPage,
     ModalPlacaPage,
-    EstornarPage
+    EstornarPage,
+    UsuarioPage,
+    UsuarioEditarPage
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,9 @@ registerLocaleData(ptBr);
     BluetoothPage,
     FinalizarPage,
     ModalPlacaPage,
-    EstornarPage
+    EstornarPage,
+    UsuarioPage,
+    UsuarioEditarPage
   ],
   providers: [
     StatusBar,
@@ -89,7 +95,8 @@ registerLocaleData(ptBr);
     BluetoothSerial,
     EstornarProvider,
     RelatorioProvider,
-    ImprimirProvider
+    ImprimirProvider,
+    UsuarioProvider
   ]
 })
 export class AppModule {}
